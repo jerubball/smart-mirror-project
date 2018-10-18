@@ -1,3 +1,5 @@
+# https://www.superdatascience.com/opencv-face-recognition/
+
 # this function will read all persons' training images, detect face from each image
 # and will return two lists of exactly same size, one list
 # of faces and another list of labels for each face
