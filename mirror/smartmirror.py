@@ -14,6 +14,8 @@ import feedparser
 from PIL import Image, ImageTk
 from contextlib import contextmanager
 
+from scripts import *
+
 LOCALE_LOCK = threading.Lock()
 
 ui_locale = '' # e.g. 'fr_FR' fro French, '' as default
@@ -99,7 +101,7 @@ class Clock(Frame):
             # could use >200 ms, but display gets jerky
             self.timeLbl.after(200, self.tick)
 
-
+'''
 class Weather(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, bg='black')
@@ -206,7 +208,7 @@ class Weather(Frame):
     @staticmethod
     def convert_kelvin_to_fahrenheit(kelvin_temp):
         return 1.8 * (kelvin_temp - 273) + 32
-
+'''
 
 class News(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -291,7 +293,6 @@ class CalendarEvent(Frame):
 
 
 class FullscreenWindow:
-
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='black')
