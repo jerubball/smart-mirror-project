@@ -1,4 +1,6 @@
 
+import nyit_events
+import nyit_news
 
 class Nyit(Frame):
     def __init__(self, parent, *args, **kwargs):
