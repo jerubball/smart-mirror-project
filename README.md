@@ -3,6 +3,7 @@
 ## Overview
 
 This projct combines smart-mirror with face check-in system.
+
 The final result will provide useful information and authentication tools.
 
 ---
