@@ -127,19 +127,20 @@ def predict(test_img):
     img = test_img.copy()
     # detect face from the image
     face, rect = detect_face(img)
+    #print(face)
 
     # predict the image using our face recognizer
     label = face_recognizer.predict(face)
+    print(label)
     # get name of respective label returned by face recognizer
-    label_text = labels[label] #subjects[label]
+    label_text = labels[label[0]] #subjects[label]
 
     # draw a rectangle around face detected
     draw_rectangle(img, rect)
     # draw name of predicted person
-    draw_text(img, label_text, rect[0], rect[1] - 5)
+    # draw_text(img, label_text, rect[0], rect[1] - 5)
 
     return img
-
 
 
 
@@ -156,6 +157,7 @@ print("Data prepared")
 print("Total faces: ", len(faces))
 print("Total labels: ", len(labels))
 
+print(labels)
 # create our LBPH face recognizer
 #face_recognizer = cv2.createLBPHFaceRecognizer()
 
@@ -163,25 +165,38 @@ print("Total labels: ", len(labels))
 #face_recognizer = cv2.face.createEigenFaceRecognizer()
 
 # or use FisherFaceRecognizer by replacing above line with
-#face_recognizer = cv2.face.createFisherFaceRecognizer()
-#face_recognizer = cv2.face_EigenFaceRecognizer()
+#face_recognizer = cv2.face.createFisherFaceRecognize()
+#face_recognizer = cv2.face.createFisherFaceRecognize()
+#face_recognizer = cv2.face_EigenFaceRecognizer.create()
 face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+
 
 face_recognizer.train(faces, np.array(labels))
 
 print("Predicting images...")
 
 #load test images
-test_img1 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama.jpg")
-#test_img2 = cv2.imread("test-data/test2.jpg")
-
+test_img1 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obamaxl.jpg")
+test_img2 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama2.jpg")
+test_img3 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama3.jpg")
+test_img4 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama4.jpg")
+test_img5 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\two.jpg")
+test_img6 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\two2.jpg")
 #perform a prediction
 predicted_img1 = predict(test_img1)
 predicted_img2 = predict(test_img2)
+predicted_img3 = predict(test_img3)
+predicted_img4 = predict(test_img4)
+predicted_img5 = predict(test_img5)
+predicted_img6 = predict(test_img6)
 print("Prediction complete")
 
 #display both images
-cv2.imshow(labels[1], predicted_img1)
-cv2.imshow(labels[2], predicted_img2)
+cv2.imshow("first", predicted_img1)
+cv2.imshow("second", predicted_img2)
+cv2.imshow("rst", predicted_img3)
+cv2.imshow("sond", predicted_img4)
+cv2.imshow("se", predicted_img5)
+cv2.imshow("s2e", predicted_img6)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
