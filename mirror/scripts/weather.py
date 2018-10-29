@@ -1,11 +1,16 @@
+from Tkinter import *
 import locale
+import threading
 import time
+import requests
+import json
+import traceback
+#import feedparser
 
-weather_api_token = 'https://api.darksky.net/forecast/5f722ef4eb98fd7f51b774b2b528c6ef/37.8267,-122.4233'
-weather_lang = 'en'
-weather_unit = 'us'
-latitude = None
-longitude = None
+from PIL import Image, ImageTk
+from contextlib import contextmanager
+
+from vars import *
 
 icon_lookup = {
     'clear-day': "assets/Sun.png",  # clear sky day
@@ -123,7 +128,7 @@ class Weather(Frame):
                     self.locationLbl.config(text=location2)
         except Exception as e:
             traceback.print_exc()
-            print "Error: %s. Cannot get weather." % e
+            print ("Error: %s. Cannot get weather." % e)
 
         self.after(600000, self.get_weather)
 
