@@ -15,7 +15,8 @@ large_text_size = 48
 medium_text_size = 28
 small_text_size = 18
 
-weather_api_token = 'https://api.darksky.net/forecast/5f722ef4eb98fd7f51b774b2b528c6ef/37.8267,-122.4233'
+location_api_token = 'a7ce42c6cf7731c0688e3c6d40afbd71'
+weather_api_token = '5f722ef4eb98fd7f51b774b2b528c6ef'
 weather_lang = 'en'
 weather_unit = 'us'
 latitude = None
