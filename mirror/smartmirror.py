@@ -306,7 +306,7 @@ class FullscreenWindow:
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
         self.nyit = Nyit(self.bottomFrame)
-        self.news.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.nyit.pack(side=LEFT, anchor=S, padx=100, pady=60)
 
 
     def toggle_fullscreen(self, event=None):
