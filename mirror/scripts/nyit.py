@@ -12,6 +12,7 @@ import feedparser
 
 from nyit_events import *
 from nyit_news import *
+from vars import *
 
 
 class Nyit(Frame):
