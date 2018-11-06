@@ -11,8 +11,22 @@ def get_news():
     news = dict()
     news["title"] = title
     news["date"] = date
+    result = list()
     for title, date in zip(news["title"], news["date"]):
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        print(title.find('a').text)
-        print(date.text)
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        #print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        #print(title.find('a').text)
+        #print(date.text)
+        newsitem = dict()
+        newsitem["title"] = title.find('a').text
+        type_and_date = str(date.text).split(' | ')
+        if len(type_and_date) > 0:
+            newsitem["type"] = type_and_date[0]
+        else:
+            newsitem["type"] = ""
+        if len(type_and_date) > 1:
+            newsitem["date"] = type_and_date[1]
+        else:
+            newsitem["date"] = ""
+        result.append(newsitem)
+        #print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    return result

@@ -21,9 +21,8 @@ from scripts.nyit import Nyit
 LOCALE_LOCK = threading.Lock()
 
 
-
 @contextmanager
-def setlocale(name): #thread proof function to work with locale
+def setlocale(name):  # thread proof function to work with locale
     with LOCALE_LOCK:
         saved = locale.setlocale(locale.LC_ALL)
         try:
@@ -31,11 +30,12 @@ def setlocale(name): #thread proof function to work with locale
         finally:
             locale.setlocale(locale.LC_ALL, saved)
 
+
 # maps open weather icons to
 # icon reading is not impacted by the 'lang' parameter
 icon_lookup = {
     'clear-day': "assets/Sun.png",  # clear sky day
-    'wind': "assets/Wind.png",   #wind
+    'wind': "assets/Wind.png",  # wind
     'cloudy': "assets/Cloud.png",  # cloudy day
     'partly-cloudy-day': "assets/PartlySunny.png",  # partly cloudy day
     'rain': "assets/Rain.png",  # rain day
@@ -45,7 +45,7 @@ icon_lookup = {
     'clear-night': "assets/Moon.png",  # clear sky night
     'partly-cloudy-night': "assets/PartlyMoon.png",  # scattered clouds night
     'thunderstorm': "assets/Storm.png",  # thunderstorm
-    'tornado': "assests/Tornado.png",    # tornado
+    'tornado': "assests/Tornado.png",  # tornado
     'hail': "assests/Hail.png"  # hail
 }
 
@@ -70,9 +70,9 @@ class Clock(Frame):
     def tick(self):
         with setlocale(ui_locale):
             if time_format == 12:
-                time2 = time.strftime('%I:%M %p') #hour in 12h format
+                time2 = time.strftime('%I:%M %p')  # hour in 12h format
             else:
-                time2 = time.strftime('%H:%M') #hour in 24h format
+                time2 = time.strftime('%H:%M')  # hour in 24h format
 
             day_of_week2 = time.strftime('%A')
             date2 = time.strftime(date_format)
@@ -90,6 +90,7 @@ class Clock(Frame):
             # to update the time display as needed
             # could use >200 ms, but display gets jerky
             self.timeLbl.after(200, self.tick)
+
 
 '''
 class Weather(Frame):
@@ -200,11 +201,12 @@ class Weather(Frame):
         return 1.8 * (kelvin_temp - 273) + 32
 '''
 
+
 class News(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
-        self.title = 'News' # 'News' is more internationally generic
+        self.title = 'News'  # 'News' is more internationally generic
         self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.newsLbl.pack(side=TOP, anchor=W)
         self.headlinesContainer = Frame(self, bg="black")
@@ -247,7 +249,8 @@ class NewsHeadline(Frame):
         self.iconLbl.pack(side=LEFT, anchor=N)
 
         self.eventName = event_name
-        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size), fg="white",
+                                  bg="black")
         self.eventNameLbl.pack(side=LEFT, anchor=N)
 
 
@@ -262,7 +265,7 @@ class Calendar(Frame):
         self.get_events()
 
     def get_events(self):
-        #TODO: implement this method
+        # TODO: implement this method
         # reference https://developers.google.com/google-apps/calendar/quickstart/python
 
         # remove all children
@@ -278,7 +281,8 @@ class CalendarEvent(Frame):
     def __init__(self, parent, event_name="Event 1"):
         Frame.__init__(self, parent, bg='black')
         self.eventName = event_name
-        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size), fg="white",
+                                  bg="black")
         self.eventNameLbl.pack(side=TOP, anchor=E)
 
 
@@ -286,10 +290,10 @@ class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='black')
-        self.topFrame = Frame(self.tk, background = 'black')
-        self.bottomFrame = Frame(self.tk, background = 'black')
-        self.topFrame.pack(side = TOP, fill=BOTH, expand = YES)
-        self.bottomFrame.pack(side = BOTTOM, fill=BOTH, expand = YES)
+        self.topFrame = Frame(self.tk, background='black')
+        self.bottomFrame = Frame(self.tk, background='black')
+        self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
+        self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
@@ -300,14 +304,13 @@ class FullscreenWindow:
         self.weather = Weather(self.topFrame)
         self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)
         # news
-        self.news = News(self.bottomFrame)
-        self.news.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        #self.news = News(self.bottomFrame)
+        #self.news.pack(side=LEFT, anchor=S, padx=100, pady=60)
         # calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
         self.nyit = Nyit(self.bottomFrame)
         self.nyit.pack(side=LEFT, anchor=S, padx=100, pady=60)
-
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
@@ -318,6 +321,7 @@ class FullscreenWindow:
         self.state = False
         self.tk.attributes("-fullscreen", False)
         return "break"
+
 
 if __name__ == '__main__':
     w = FullscreenWindow()
