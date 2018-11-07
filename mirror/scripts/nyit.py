@@ -32,17 +32,19 @@ class Nyit(Frame):
                 widget.destroy()
             all_events = get_events()
             all_news = get_news()
-            # print get_events()
-            # print get_news()
-            for event in all_news[:5]:
-                headline = Headline(self.headlinesContainer, event)
+            for news in all_news[:5]:
+                headline = Headline(self.headlinesContainer, news)
                 headline.pack(side=TOP, anchor=W)
+            # for event in all_events[:5]:
+            #     headline = Headline(self.headlinesContainer, event)
+            #     headline.pack(side=TOP, anchor=W)
         except Exception as e:
             traceback.print_exc()
             # print "Error: %s. Cannot get news." % e
 
         self.after(600000, self.get_headlines)
         # self.after(10000, self.get_headlines)
+
 
 class Headline(Frame):
     def __init__(self, parent, dictionary):

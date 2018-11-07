@@ -15,7 +15,7 @@ os.system('! dpkg -S python-imaging-tk && apt-get -y install python-imaging-tk')
 
 # Generate the requirements from the file for old instructions
 print('INFO: Generating the requirements from requirements.txt')
-packages = ['requests', 'PIL', 'feedparser', ]
+packages = ['requests', 'PIL', 'feedparser', 'bs4', ]
 for line in open('requirements.txt', 'r'):
     if not line.startswith('#'):
         packages.append(line.strip())
