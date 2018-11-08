@@ -15,14 +15,15 @@ def detect_face(img):
 
     #load OpenCV face detector, I am using LBP which is fast
     #there is also a more accurate but slow: Haar classifier
+    #face_cascade = cv2.CascadeClassifier('C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\faces\\lbpcascade_frontalface_improved.xml')
     face_cascade = cv2.CascadeClassifier('C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\faces\\lbpcascade_frontalface.xml')
-
     #let's detect multiscale images(some images may be closer to camera than others)
     #result is a list of faces
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5);
 
     #if no faces are detected then return original img
     if (len(faces) == 0):
+        print("face not found")
         return None, None
 
     #under the assumption that there will be only one face,
@@ -176,12 +177,12 @@ face_recognizer.train(faces, np.array(labels))
 print("Predicting images...")
 
 #load test images
-test_img1 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obamaxl.jpg")
-test_img2 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama2.jpg")
-test_img3 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama3.jpg")
-test_img4 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\obama4.jpg")
-test_img5 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\two.jpg")
-test_img6 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\two2.jpg")
+test_img1 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test.jpg")
+test_img2 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test1.jpg")
+test_img3 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test2.jpg")
+test_img4 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test3.jpg")
+test_img5 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test4.jpg")
+test_img6 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test5.jpg")
 #perform a prediction
 predicted_img1 = predict(test_img1)
 predicted_img2 = predict(test_img2)
