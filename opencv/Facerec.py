@@ -8,6 +8,7 @@ import cv2
 import numpy as np
 import time
 
+home_dir = 'C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\'
 #function to detect face using OpenCV
 def detect_face(img):
     #convert the test image to gray scale as opencv face detector expects gray images
@@ -15,8 +16,9 @@ def detect_face(img):
 
     #load OpenCV face detector, I am using LBP which is fast
     #there is also a more accurate but slow: Haar classifier
-    #face_cascade = cv2.CascadeClassifier('C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\faces\\lbpcascade_frontalface_improved.xml')
-    face_cascade = cv2.CascadeClassifier('C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\faces\\lbpcascade_frontalface.xml')
+    #face_cascade = cv2.CascadeClassifier('faces/lbpcascade_frontalface_improved.xml')
+    face_cascade = cv2.CascadeClassifier('faces/lbpcascade_frontalface.xml')
+    
     #let's detect multiscale images(some images may be closer to camera than others)
     #result is a list of faces
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5);
@@ -151,7 +153,7 @@ def predict(test_img):
 
 # and the other list will contain respective labels for each face
 print("Preparing data...")
-faces, labels = prepare_training_data("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\train")
+faces, labels = prepare_training_data("faces/train")
 print("Data prepared")
 
 # print total faces and labels
@@ -160,7 +162,7 @@ print("Total labels: ", len(labels))
 
 print(labels)
 # create our LBPH face recognizer
-#face_recognizer = cv2.createLBPHFaceRecognizer()
+face_recognizer = cv2.createLBPHFaceRecognizer()
 
 # or use EigenFaceRecognizer by replacing above line with
 #face_recognizer = cv2.face.createEigenFaceRecognizer()
@@ -169,35 +171,33 @@ print(labels)
 #face_recognizer = cv2.face.createFisherFaceRecognize()
 #face_recognizer = cv2.face.createFisherFaceRecognize()
 #face_recognizer = cv2.face_EigenFaceRecognizer.create()
-face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+#face_recognizer = cv2.face_LBPHFaceRecognizer.create()
 
 
 face_recognizer.train(faces, np.array(labels))
 
 print("Predicting images...")
 
-#load test images
-test_img1 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test.jpg")
-test_img2 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test1.jpg")
-test_img3 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test2.jpg")
-test_img4 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test3.jpg")
-test_img5 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test4.jpg")
-test_img6 = cv2.imread("C:\\Users\\Timmy .LAPTOP-VEVB5SPR\\Desktop\\faces\\test5.jpg")
-#perform a prediction
-predicted_img1 = predict(test_img1)
-predicted_img2 = predict(test_img2)
-predicted_img3 = predict(test_img3)
-predicted_img4 = predict(test_img4)
-predicted_img5 = predict(test_img5)
-predicted_img6 = predict(test_img6)
+test_files = [{'title':'one', 'path':'faces/test.jpg'},
+{'title':'two', 'path':'faces/test1.jpg'},
+{'title':'three', 'path':'faces/test2.jpg'},
+{'title':'four', 'path':'faces/test3.jpg'},
+{'title':'five', 'path':'faces/test4.jpg'},
+{'title':'six', 'path':'faces/test5.jpg'}]
+
+
+for pair in test_files:
+    #load test images
+    test_img_temp = cv2.imread(pair['path'])
+    pair['img'] = test_img_temp
+    #perform a prediction
+    pair['predict'] = predict(test_img)
+
 print("Prediction complete")
 
-#display both images
-cv2.imshow("first", predicted_img1)
-cv2.imshow("second", predicted_img2)
-cv2.imshow("rst", predicted_img3)
-cv2.imshow("sond", predicted_img4)
-cv2.imshow("se", predicted_img5)
-cv2.imshow("s2e", predicted_img6)
+for pair in test_files:
+    #display all images
+    cv2.imshow(pair['title'], pair['predict'])
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
