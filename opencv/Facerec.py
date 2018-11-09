@@ -139,7 +139,7 @@ def predict(test_img):
     
     return img
 
-def do_training():
+def do_processing():
     # let's first prepare our training data
     # data will be in two lists of same size
     # one list will contain all the faces
@@ -163,13 +163,14 @@ def do_training():
     #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     np.save('faces.npy', faces)
     np.save('labels.py', labels)
-    
+
+def do_training():
+    faces = np.load('faces.npy')
+    labels = np.load('labels.npy')
     face_recognizer.train(faces, np.array(labels))
 
 def do_prediction():
     print("Predicting images...")
-    faces = np.load('faces.npy')
-    labels = np.load('labels.npy')
     
     test_files = [{'title':'one', 'path':'faces/test.jpg'},
     {'title':'two', 'path':'faces/test1.jpg'},
