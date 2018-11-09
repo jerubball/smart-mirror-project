@@ -190,7 +190,7 @@ def do_prediction():
     {'title':'two', 'path':'faces/test1.jpg'},
     {'title':'three', 'path':'faces/test2.jpg'},
     {'title':'four', 'path':'faces/test3.jpg'},
-    {'title':'five', 'path':'faces/test4.jpg'},
+    #{'title':'five', 'path':'faces/test4.jpg'},
     {'title':'six', 'path':'faces/test5.jpg'}]
     
     for pair in test_files:
