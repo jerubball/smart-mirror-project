@@ -151,6 +151,12 @@ def do_processing():
     print("Total faces: ", len(faces))
     print("Total labels: ", len(labels))
     print(labels)
+    np.save('faces.npy', faces)
+    np.save('labels.npy', labels)
+
+def do_training():
+    faces = np.load('faces.npy')
+    labels = np.load('labels.npy')
     # create our LBPH face recognizer
     face_recognizer = cv2.createLBPHFaceRecognizer()
     # or use EigenFaceRecognizer by replacing above line with
@@ -161,12 +167,6 @@ def do_processing():
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     #face_recognizer = cv2.face_EigenFaceRecognizer.create()
     #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
-    np.save('faces.npy', faces)
-    np.save('labels.npy', labels)
-
-def do_training():
-    faces = np.load('faces.npy')
-    labels = np.load('labels.npy')
     face_recognizer.train(faces, np.array(labels))
 
 def do_prediction():
