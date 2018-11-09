@@ -18,6 +18,8 @@ from scripts.vars import *
 from scripts.weather import Weather
 from scripts.nyit import Nyit
 
+from opencv.Facerec import *
+
 LOCALE_LOCK = threading.Lock()
 
 
@@ -285,6 +287,34 @@ class CalendarEvent(Frame):
                                   bg="black")
         self.eventNameLbl.pack(side=TOP, anchor=E)
 
+class Face(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        Frame.__init__(self, parent, *args, **kwargs)
+        self.config(bg='black')
+        self.title = 'Face Info' # 'News' is more internationally generic
+        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
+        self.newsLbl.pack(side=TOP, anchor=W)
+        self.labelContainer = Frame(self, bg="black")
+        self.labelContainer.pack(side=TOP)
+        self.do_camera()
+
+    def do_camera(self):
+        try:
+            # remove all children
+            for widget in self.labelContainer.winfo_children():
+                widget.destroy()
+            # take photo
+            # perform recognition
+            text = Label(self, text="TEST", font=('Helvetica', medium_text_size), fg="white", bg="black")
+            text.pack(side=BOTTOM, anchor=W)
+            
+        except Exception as e:
+            traceback.print_exc()
+            # print "Error: %s. Cannot get news." % e
+
+        self.after(600000, self.do_camera)
+        # self.after(10000, self.do_camera)
+
 
 class FullscreenWindow:
     def __init__(self):
@@ -311,6 +341,8 @@ class FullscreenWindow:
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
         self.nyit = Nyit(self.bottomFrame)
         self.nyit.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.face = Face(self.bottomFrame)
+        self.face.pack(side=CENTER, anchor=N, padx=100, pady=60)
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
