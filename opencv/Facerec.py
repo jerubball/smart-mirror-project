@@ -139,57 +139,59 @@ def predict(test_img):
     
     return img
 
-# let's first prepare our training data
-# data will be in two lists of same size
-# one list will contain all the faces
+def do_training():
+    # let's first prepare our training data
+    # data will be in two lists of same size
+    # one list will contain all the faces
+    # and the other list will contain respective labels for each face
+    print("Preparing data...")
+    faces, labels = prepare_training_data("faces/train")
+    print("Data prepared")
+    # print total faces and labels
+    print("Total faces: ", len(faces))
+    print("Total labels: ", len(labels))
+    print(labels)
+    # create our LBPH face recognizer
+    face_recognizer = cv2.createLBPHFaceRecognizer()
+    # or use EigenFaceRecognizer by replacing above line with
+    #face_recognizer = cv2.face.createEigenFaceRecognizer()
+    # or use FisherFaceRecognizer by replacing above line with
+    #face_recognizer = cv2.face.createFisherFaceRecognize()
+    
+    #face_recognizer = cv2.face.createFisherFaceRecognize()
+    #face_recognizer = cv2.face_EigenFaceRecognizer.create()
+    #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    np.save('faces.npy', faces)
+    np.save('labels.py', labels)
+    
+    face_recognizer.train(faces, np.array(labels))
 
-# and the other list will contain respective labels for each face
-print("Preparing data...")
-faces, labels = prepare_training_data("faces/train")
-print("Data prepared")
-
-# print total faces and labels
-print("Total faces: ", len(faces))
-print("Total labels: ", len(labels))
-
-print(labels)
-# create our LBPH face recognizer
-face_recognizer = cv2.createLBPHFaceRecognizer()
-
-# or use EigenFaceRecognizer by replacing above line with
-#face_recognizer = cv2.face.createEigenFaceRecognizer()
-# or use FisherFaceRecognizer by replacing above line with
-#face_recognizer = cv2.face.createFisherFaceRecognize()
-
-#face_recognizer = cv2.face.createFisherFaceRecognize()
-#face_recognizer = cv2.face_EigenFaceRecognizer.create()
-#face_recognizer = cv2.face_LBPHFaceRecognizer.create()
-
-
-face_recognizer.train(faces, np.array(labels))
-
-print("Predicting images...")
-
-test_files = [{'title':'one', 'path':'faces/test.jpg'},
-{'title':'two', 'path':'faces/test1.jpg'},
-{'title':'three', 'path':'faces/test2.jpg'},
-{'title':'four', 'path':'faces/test3.jpg'},
-{'title':'five', 'path':'faces/test4.jpg'},
-{'title':'six', 'path':'faces/test5.jpg'}]
+def do_prediction():
+    print("Predicting images...")
+    faces = np.load('faces.npy')
+    labels = np.load('labels.npy')
+    
+    test_files = [{'title':'one', 'path':'faces/test.jpg'},
+    {'title':'two', 'path':'faces/test1.jpg'},
+    {'title':'three', 'path':'faces/test2.jpg'},
+    {'title':'four', 'path':'faces/test3.jpg'},
+    {'title':'five', 'path':'faces/test4.jpg'},
+    {'title':'six', 'path':'faces/test5.jpg'}]
+    
+    for pair in test_files:
+        #load test images
+        test_img_temp = cv2.imread(pair['path'])
+        pair['img'] = test_img_temp
+        #perform a prediction
+        pair['predict'] = predict(test_img_temp)
+    
+    print("Prediction complete")
+    
+    for pair in test_files:
+        #display all images
+        cv2.imshow(pair['title'], pair['predict'])
+    
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
-for pair in test_files:
-    #load test images
-    test_img_temp = cv2.imread(pair['path'])
-    pair['img'] = test_img_temp
-    #perform a prediction
-    pair['predict'] = predict(test_img_temp)
-
-print("Prediction complete")
-
-for pair in test_files:
-    #display all images
-    cv2.imshow(pair['title'], pair['predict'])
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
