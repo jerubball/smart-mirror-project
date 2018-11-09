@@ -162,7 +162,7 @@ def do_processing():
     #face_recognizer = cv2.face_EigenFaceRecognizer.create()
     #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     np.save('faces.npy', faces)
-    np.save('labels.py', labels)
+    np.save('labels.npy', labels)
 
 def do_training():
     faces = np.load('faces.npy')
