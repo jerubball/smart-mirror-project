@@ -11,7 +11,7 @@ import time
 faces = None
 labels = None
 face_recognizer = None
-home_dir = 'C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\'
+home_dir = 'opencv/'
 
 #function to detect face using OpenCV
 def detect_face(img):
@@ -20,8 +20,8 @@ def detect_face(img):
     
     #load OpenCV face detector, I am using LBP which is fast
     #there is also a more accurate but slow: Haar classifier
-    #face_cascade = cv2.CascadeClassifier('faces/lbpcascade_frontalface_improved.xml')
-    face_cascade = cv2.CascadeClassifier('faces/lbpcascade_frontalface.xml')
+    #face_cascade = cv2.CascadeClassifier(home_dir + 'faces/lbpcascade_frontalface_improved.xml')
+    face_cascade = cv2.CascadeClassifier(home_dir + 'faces/lbpcascade_frontalface.xml')
     
     #let's detect multiscale images(some images may be closer to camera than others)
     #result is a list of faces
@@ -151,22 +151,22 @@ def do_processing():
     # one list will contain all the faces
     # and the other list will contain respective labels for each face
     print("Preparing data...")
-    faces, labels = prepare_training_data("faces/train")
+    faces, labels = prepare_training_data(home_dir + "faces/train")
     print("Data prepared")
     # print total faces and labels
     print("Total faces: ", len(faces))
     print("Total labels: ", len(labels))
     print(labels)
-    np.save('faces.npy', faces)
-    np.save('labels.npy', labels)
+    np.save(home_dir + 'faces.npy', faces)
+    np.save(home_dir + 'labels.npy', labels)
 
 def do_training():
     global faces
     global labels
     global face_recognizer
     
-    faces = np.load('faces.npy')
-    labels = np.load('labels.npy')
+    faces = np.load(home_dir + 'faces.npy')
+    labels = np.load(home_dir + 'labels.npy')
     # create our LBPH face recognizer
     face_recognizer = cv2.createLBPHFaceRecognizer()
     # or use EigenFaceRecognizer by replacing above line with
@@ -186,12 +186,12 @@ def do_prediction():
     
     print("Predicting images...")
     
-    test_files = [{'title':'one', 'path':'faces/test.jpg'},
-    {'title':'two', 'path':'faces/test1.jpg'},
-    {'title':'three', 'path':'faces/test2.jpg'},
-    #{'title':'four', 'path':'faces/test3.jpg'},
-    {'title':'five', 'path':'faces/test4.jpg'},
-    {'title':'six', 'path':'faces/test5.jpg'}]
+    test_files = [{'title':'one', 'path':home_dir + 'faces/test.jpg'},
+    {'title':'two', 'path':home_dir + 'faces/test1.jpg'},
+    {'title':'three', 'path':home_dir + 'faces/test2.jpg'},
+    #{'title':'four', 'path':home_dir + 'faces/test3.jpg'},
+    {'title':'five', 'path':home_dir + 'faces/test4.jpg'},
+    {'title':'six', 'path':home_dir + 'faces/test5.jpg'}]
     
     for pair in test_files:
         #load test images
