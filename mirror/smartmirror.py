@@ -356,5 +356,6 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
+    do_training()
     w = FullscreenWindow()
     w.tk.mainloop()

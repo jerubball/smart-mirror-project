@@ -195,10 +195,9 @@ def do_prediction():
     
     for pair in test_files:
         #load test images
-        test_img_temp = cv2.imread(pair['path'])
-        pair['img'] = test_img_temp
+        pair['img'] = cv2.imread(pair['path'])
         #perform a prediction
-        pair['predict'] = predict(test_img_temp)
+        pair['predict'] = predict(pair['img'])
     
     print("Prediction complete")
     
@@ -209,4 +208,10 @@ def do_prediction():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-
+def do_prediction(filename, title="Result"):
+    global faces
+    global labels
+    global face_recognizer
+    test_img = cv2.imread(filename)
+    predict_img = predict(test_img)
+    cv2.imshow(title, predict_img)
