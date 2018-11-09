@@ -8,6 +8,9 @@ import cv2
 import numpy as np
 import time
 
+faces = None
+labels = None
+face_recognizer = None
 home_dir = 'C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\'
 
 #function to detect face using OpenCV
