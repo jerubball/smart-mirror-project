@@ -319,9 +319,9 @@ class Face(Frame):
 class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
-        self.tk.configure(background='black')
-        self.topFrame = Frame(self.tk, background='black')
-        self.bottomFrame = Frame(self.tk, background='black')
+        self.tk.configure(background='green')
+        self.topFrame = Frame(self.tk, background='green')
+        self.bottomFrame = Frame(self.tk, background='red')
         self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
         self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
         self.state = False
