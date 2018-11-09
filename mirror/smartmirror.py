@@ -11,6 +11,8 @@ import json
 import traceback
 import feedparser
 
+import os
+
 from PIL import Image, ImageTk
 from contextlib import contextmanager
 
@@ -304,7 +306,9 @@ class Face(Frame):
             for widget in self.labelContainer.winfo_children():
                 widget.destroy()
             # take photo
+            os.system("raspistill -o image.png")
             # perform recognition
+            do_prediction("image.png")
             text = Label(self, text="TEST", font=('Helvetica', medium_text_size), fg="white", bg="black")
             text.pack(side=BOTTOM, anchor=W)
             
@@ -312,7 +316,7 @@ class Face(Frame):
             traceback.print_exc()
             # print "Error: %s. Cannot get news." % e
 
-        self.after(600000, self.do_camera)
+        self.after(10000, self.do_camera)
         # self.after(10000, self.do_camera)
 
 
