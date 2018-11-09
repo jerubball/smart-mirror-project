@@ -8,9 +8,9 @@ import cv2
 import numpy as np
 import time
 
-global faces
-global labels
-global face_recognizer
+faces = None
+labels = None
+face_recognizer = None
 home_dir = 'C:\\Users\\Timmy .LAPTOP-VEVB5SPR\Desktop\\'
 
 #function to detect face using OpenCV
@@ -143,6 +143,9 @@ def predict(test_img):
     return img
 
 def do_processing():
+    global faces
+    global labels
+    
     # let's first prepare our training data
     # data will be in two lists of same size
     # one list will contain all the faces
@@ -158,6 +161,10 @@ def do_processing():
     np.save('labels.npy', labels)
 
 def do_training():
+    global faces
+    global labels
+    global face_recognizer
+    
     faces = np.load('faces.npy')
     labels = np.load('labels.npy')
     # create our LBPH face recognizer
@@ -173,6 +180,10 @@ def do_training():
     face_recognizer.train(faces, np.array(labels))
 
 def do_prediction():
+    global faces
+    global labels
+    global face_recognizer
+    
     print("Predicting images...")
     
     test_files = [{'title':'one', 'path':'faces/test.jpg'},
