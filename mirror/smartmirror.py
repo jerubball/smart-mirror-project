@@ -18,7 +18,7 @@ from contextlib import contextmanager
 
 from scripts.vars import *
 from scripts.weather import Weather
-from scripts.nyit import Nyit
+from scripts.nyit import *
 
 from opencv.Facerec import *
 
@@ -222,7 +222,7 @@ class News(Frame):
             # remove all children
             for widget in self.headlinesContainer.winfo_children():
                 widget.destroy()
-            if news_country_code == None:
+            if news_country_code is None:
                 headlines_url = "https://news.google.com/news?ned=us&output=rss"
             else:
                 headlines_url = "https://news.google.com/news?ned=%s&output=rss" % news_country_code
@@ -289,11 +289,12 @@ class CalendarEvent(Frame):
                                   bg="black")
         self.eventNameLbl.pack(side=TOP, anchor=E)
 
+
 class Face(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
-        self.title = 'Face Info' # 'News' is more internationally generic
+        self.title = 'Face Info'  # 'News' is more internationally generic
         self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.newsLbl.pack(side=TOP, anchor=W)
         self.labelContainer = Frame(self, bg="black")
@@ -311,7 +312,7 @@ class Face(Frame):
             do_prediction("image.png")
             text = Label(self, text="TEST", font=('Helvetica', medium_text_size), fg="white", bg="black")
             text.pack(side=BOTTOM, anchor=W)
-            
+
         except Exception as e:
             traceback.print_exc()
             # print "Error: %s. Cannot get news." % e
@@ -325,9 +326,16 @@ class FullscreenWindow:
         self.tk = Tk()
         self.tk.configure(background='green')
         self.topFrame = Frame(self.tk, background='green')
-        self.bottomFrame = Frame(self.tk, background='red')
+        self.middleFaceFrame = Frame(self.tk, background='yellow')
+        self.bottomNewsFrame = Frame(self.tk, background='red')
+        self.bottomEventsFrame = Frame(self.tk, background='purple')
         self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
-        self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
+
+        self.middleFaceFrame.pack(side=TOP, fill=BOTH, expand=YES)
+
+        self.bottomNewsFrame.pack(side=LEFT, fill=BOTH, expand=YES)
+        self.bottomEventsFrame.pack(side=RIGHT, fill=BOTH, expand=YES)
+
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
@@ -338,14 +346,14 @@ class FullscreenWindow:
         self.weather = Weather(self.topFrame)
         self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)
         # news
-        #self.news = News(self.bottomFrame)
-        #self.news.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.nyite = NyitEvents(self.bottomEventsFrame)
+        self.nyite.pack(side=LEFT, anchor=S, padx=100, pady=60)
         # calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
-        self.nyit = Nyit(self.bottomFrame)
-        self.nyit.pack(side=LEFT, anchor=S, padx=100, pady=60)
-        self.face = Face(self.bottomFrame)
+        self.nyitn = NyitNews(self.bottomNewsFrame)
+        self.nyitn.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.face = Face(self.middleFaceFrame)
         self.face.pack(side=TOP, anchor=N, padx=100, pady=60)
 
     def toggle_fullscreen(self, event=None):
@@ -360,6 +368,6 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    do_training()
+    # do_training()
     w = FullscreenWindow()
     w.tk.mainloop()
