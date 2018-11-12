@@ -307,10 +307,10 @@ class Face(Frame):
             for widget in self.labelContainer.winfo_children():
                 widget.destroy()
             # take photo
-            os.system("raspistill -o image.png")
+            os.system("raspistill -o image.png -t 1 -p '200,100,600,400'")
             # perform recognition
-            do_prediction("image.png")
-            text = Label(self, text="TEST", font=('Helvetica', medium_text_size), fg="white", bg="black")
+            result = do_prediction_single("image.png")
+            text = Label(self, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
             text.pack(side=BOTTOM, anchor=W)
 
         except Exception as e:
