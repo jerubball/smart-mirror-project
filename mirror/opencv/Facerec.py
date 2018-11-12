@@ -10,6 +10,7 @@ import time
 
 faces = None
 labels = None
+tables = None
 face_recognizer = None
 home_dir = 'opencv/'
 
@@ -46,21 +47,24 @@ def prepare_training_data(data_folder_path):
     faces = []
     # list to hold labels for all subjects
     labels = []
-    
+    tables = dict()
+    labelCount = 0
     # let's go through each directory and read images within it
     for dir_name in dirs:
         print (dir_name)
+        labelCount += 1
         
         # our subject directories start with letter 's' so
         # ignore any non-relevant directories if any
-        if not dir_name.startswith("s"):
-            continue;
+        #if not dir_name.startswith("s"):
+            #continue;
         
         # ------STEP-2--------
         # extract label number of subject from dir_name
         # format of dir name = slabel
         # , so removing letter 's' from dir_name will give us label
-        label = int(dir_name.replace("s", ""))
+        label = labelCount
+        tables[label] = dir_name
         
         # build path of directory containing images for current subject subject
         # sample subject_dir_path = "training-data/s1"
@@ -104,7 +108,7 @@ def prepare_training_data(data_folder_path):
             cv2.waitKey(1)
             cv2.destroyAllWindows()
     
-    return faces, labels
+    return faces, labels, tables
 
 # function to draw rectangle on image
 # according to given (x, y) coordinates and
@@ -132,26 +136,27 @@ def predict(test_img):
     # predict the image using our face recognizer
     label = face_recognizer.predict(face)
     print(label)
-    # get name of respective label returned by face recognizer
-    label_text = labels[label[0]] #subjects[label]
+    # get id of respective label returned by face recognizer
+    #label_id = labels[label[0]] #subjects[label]
     
     # draw a rectangle around face detected
     draw_rectangle(img, rect)
     # draw name of predicted person
     # draw_text(img, label_text, rect[0], rect[1] - 5)
     
-    return img
+    return img, label[0]
 
 def do_processing():
     global faces
     global labels
+    global tables
     
     # let's first prepare our training data
     # data will be in two lists of same size
     # one list will contain all the faces
     # and the other list will contain respective labels for each face
     print("Preparing data...")
-    faces, labels = prepare_training_data(home_dir + "faces/train")
+    faces, labels, tables = prepare_training_data(home_dir + "faces/train")
     print("Data prepared")
     # print total faces and labels
     print("Total faces: ", len(faces))
@@ -159,16 +164,20 @@ def do_processing():
     print(labels)
     np.save(home_dir + 'faces.npy', faces)
     np.save(home_dir + 'labels.npy', labels)
+    np.save(home_dir + 'tables.npy', tables)
 
 def do_training():
     global faces
     global labels
+    global tables
     global face_recognizer
     
     faces = np.load(home_dir + 'faces.npy')
     labels = np.load(home_dir + 'labels.npy')
+    tables = np.load(home_dir + 'tables.npy').item()
     # create our LBPH face recognizer
-    face_recognizer = cv2.createLBPHFaceRecognizer()
+    #face_recognizer = cv2.createLBPHFaceRecognizer()
+    
     # or use EigenFaceRecognizer by replacing above line with
     #face_recognizer = cv2.face.createEigenFaceRecognizer()
     # or use FisherFaceRecognizer by replacing above line with
@@ -176,12 +185,15 @@ def do_training():
     
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     #face_recognizer = cv2.face_EigenFaceRecognizer.create()
-    #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    
+    face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    
     face_recognizer.train(faces, np.array(labels))
 
 def do_prediction():
     global faces
     global labels
+    global tables
     global face_recognizer
     
     print("Predicting images...")
@@ -197,21 +209,35 @@ def do_prediction():
         #load test images
         pair['img'] = cv2.imread(pair['path'])
         #perform a prediction
-        pair['predict'] = predict(pair['img'])
+        pair['predict'], pair['id'] = predict(pair['img'])
+        print tables[pair['id']]
+        pair['name'] = tables[pair['id']]
     
     print("Prediction complete")
     
     for pair in test_files:
         #display all images
         cv2.imshow(pair['title'], pair['predict'])
+        print (pair['name'])
     
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def do_prediction(filename, title="Result"):
+def do_prediction_single(filename, title="Result"):
     global faces
     global labels
+    global tables
     global face_recognizer
     test_img = cv2.imread(filename)
-    predict_img = predict(test_img)
+    predict_img, predict_id = predict(test_img)
+    predict_name = tables[predict_id]
     cv2.imshow(title, predict_img)
+    
+    return predict_name
+
+if __name__ is '__main__':
+    home_dir = '';
+    
+    do_processing()
+    do_training()
+    do_prediction()
