@@ -346,13 +346,13 @@ class FullscreenWindow:
         self.weather = Weather(self.topFrame)
         self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)
         # news
-        self.nyite = NyitEvents(self.bottomEventsFrame)
-        self.nyite.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.nyitevents = NyitEvents(self.bottomEventsFrame)
+        self.nyitevents.pack(side=RIGHT, anchor=S, padx=100, pady=60)
         # calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
-        self.nyitn = NyitNews(self.bottomNewsFrame)
-        self.nyitn.pack(side=LEFT, anchor=S, padx=100, pady=60)
+        self.nyitnews = NyitNews(self.bottomNewsFrame)
+        self.nyitnews.pack(side=LEFT, anchor=S, padx=100, pady=60)
         self.face = Face(self.middleFaceFrame)
         self.face.pack(side=TOP, anchor=N, padx=100, pady=60)
 
