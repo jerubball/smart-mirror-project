@@ -192,7 +192,7 @@ def do_training():
     labels = np.load(home_dir + 'labels.npy')
     tables = np.load(home_dir + 'tables.npy').item()
     # create our LBPH face recognizer
-    #face_recognizer = cv2.createLBPHFaceRecognizer()
+    face_recognizer = cv2.createLBPHFaceRecognizer()
     
     # or use EigenFaceRecognizer by replacing above line with
     # face_recognizer = cv2.face.createEigenFaceRecognizer()
@@ -202,7 +202,7 @@ def do_training():
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     #face_recognizer = cv2.face_EigenFaceRecognizer.create()
     
-    face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     # face_recognizer = cv2.face.createFisherFaceRecognize()
 
     # face_recognizer = cv2.face.createFisherFaceRecognize()
@@ -256,6 +256,6 @@ def do_prediction_single(filename, title="Result"):
 if __name__ is '__main__':
     home_dir = '';
     
-    #do_processing()
-    do_training()
-    do_prediction()
+    do_processing()
+    #do_training()
+    #do_prediction()
