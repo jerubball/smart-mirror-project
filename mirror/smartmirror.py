@@ -307,7 +307,7 @@ class Face(Frame):
             for widget in self.labelContainer.winfo_children():
                 widget.destroy()
             # take photo
-            os.system("raspistill -o image.png -t 1 -p '200,100,600,400'")
+            os.system("raspistill -o image.png -k -t 0 -p '200,100,600,400'")
             # perform recognition
             result = do_prediction_single("image.png")
             text = Label(self, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
@@ -368,6 +368,6 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    # do_training()
+    do_training()
     w = FullscreenWindow()
     w.tk.mainloop()
