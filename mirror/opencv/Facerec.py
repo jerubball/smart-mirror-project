@@ -60,16 +60,6 @@ def prepare_training_data(data_folder_path):
         # ignore any non-relevant directories if any
         #if not dir_name.startswith("s"):
             #continue;
-        
-
-    # let's go through each directory and read images within it
-    for dir_name in dirs:
-        print (dir_name)
-
-        # our subject directories start with letter 's' so
-        # ignore any non-relevant directories if any
-        if not dir_name.startswith("s"):
-            continue;
 
         # ------STEP-2--------
         # extract label number of subject from dir_name
@@ -79,7 +69,6 @@ def prepare_training_data(data_folder_path):
         label = labelCount
         tables[label] = dir_name
         
-        label = int(dir_name.replace("s", ""))
         # build path of directory containing images for current subject subject
         # sample subject_dir_path = "training-data/s1"
         subject_dir_path = data_folder_path + "/" + dir_name
@@ -192,7 +181,7 @@ def do_training():
     labels = np.load(home_dir + 'labels.npy')
     tables = np.load(home_dir + 'tables.npy').item()
     # create our LBPH face recognizer
-    face_recognizer = cv2.createLBPHFaceRecognizer()
+    #face_recognizer = cv2.createLBPHFaceRecognizer()
     
     # or use EigenFaceRecognizer by replacing above line with
     # face_recognizer = cv2.face.createEigenFaceRecognizer()
@@ -202,7 +191,7 @@ def do_training():
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     #face_recognizer = cv2.face_EigenFaceRecognizer.create()
     
-    #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     # face_recognizer = cv2.face.createFisherFaceRecognize()
 
     # face_recognizer = cv2.face.createFisherFaceRecognize()
@@ -254,8 +243,8 @@ def do_prediction_single(filename, title="Result"):
     return predict_name
 
 if __name__ is '__main__':
-    home_dir = '';
     
+    home_dir = '';
     do_processing()
     #do_training()
     #do_prediction()
