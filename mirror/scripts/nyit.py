@@ -9,8 +9,7 @@ import traceback
 import feedparser
 
 
-from nyit_events import *
-from nyit_news import *
+from nyit_data import *
 from vars import *
 
 
@@ -32,7 +31,7 @@ class NyitNews(Frame):
                 widget.destroy()
             all_news = get_news()
             for news in all_news[:5]:
-                headline = HeadlineNews(self.headlinesContainer, news)
+                headline = NyitHeadlineNews(self.headlinesContainer, news)
                 headline.pack(side=TOP, anchor=W)
         except Exception as e:
             traceback.print_exc()
@@ -42,7 +41,7 @@ class NyitNews(Frame):
         # self.after(10000, self.get_headlines)
 
 
-class HeadlineNews(Frame):
+class NyitHeadlineNews(Frame):
     def __init__(self, parent, dictionary):
         Frame.__init__(self, parent, bg='black')
 
@@ -83,7 +82,7 @@ class NyitEvents(Frame):
                 widget.destroy()
             all_events = get_events()
             for event in all_events[:5]:
-                headline = HeadlineEvents(self.headlinesContainer, event)
+                headline = NyitHeadlineEvents(self.headlinesContainer, event)
                 headline.pack(side=TOP, anchor=W)
         except Exception as e:
             traceback.print_exc()
@@ -93,7 +92,7 @@ class NyitEvents(Frame):
         # self.after(10000, self.get_headlines)
 
 
-class HeadlineEvents(Frame):
+class NyitHeadlineEvents(Frame):
     def __init__(self, parent, dictionary):
         Frame.__init__(self, parent, bg='black')
 
