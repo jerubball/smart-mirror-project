@@ -5,7 +5,7 @@ import time
 import requests
 import json
 import traceback
-#import feedparser
+# import feedparser
 
 from PIL import Image, ImageTk
 from contextlib import contextmanager
@@ -14,7 +14,7 @@ from vars import *
 
 icon_lookup = {
     'clear-day': "assets/Sun.png",  # clear sky day
-    'wind': "assets/Wind.png",   #wind
+    'wind': "assets/Wind.png",  # wind
     'cloudy': "assets/Cloud.png",  # cloudy day
     'partly-cloudy-day': "assets/PartlySunny.png",  # partly cloudy day
     'rain': "assets/Rain.png",  # rain day
@@ -24,7 +24,7 @@ icon_lookup = {
     'clear-night': "assets/Moon.png",  # clear sky night
     'partly-cloudy-night': "assets/PartlyMoon.png",  # scattered clouds night
     'thunderstorm': "assets/Storm.png",  # thunderstorm
-    'tornado': "assests/Tornado.png",    # tornado
+    'tornado': "assests/Tornado.png",  # tornado
     'hail': "assests/Hail.png"  # hail
 }
 
@@ -45,7 +45,8 @@ class Weather(Frame):
         self.iconLbl.pack(side=LEFT, anchor=N, padx=20)
         self.currentlyLbl = Label(self, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
         self.currentlyLbl.pack(side=TOP, anchor=W)
-        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W) #justify=RIGHT)
+        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black",
+                                 anchor=W)  # justify=RIGHT)
         self.forecastLbl.pack(side=TOP, anchor=W)
         self.locationLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black")
         self.locationLbl.pack(side=TOP, anchor=W)
@@ -76,16 +77,18 @@ class Weather(Frame):
                 location2 = "%s, %s" % (location_obj['city'], location_obj['region_code'])
 
                 # get weather
-                weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (weather_api_token, lat,lon,weather_lang,weather_unit)
+                weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (
+                    weather_api_token, lat, lon, weather_lang, weather_unit)
             else:
                 location2 = ""
                 # get weather
-                weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (weather_api_token, latitude, longitude, weather_lang, weather_unit)
+                weather_req_url = "https://api.darksky.net/forecast/%s/%s,%s?lang=%s&units=%s" % (
+                    weather_api_token, latitude, longitude, weather_lang, weather_unit)
 
             r = requests.get(weather_req_url)
             weather_obj = json.loads(r.text)
 
-            degree_sign= u'\N{DEGREE SIGN}'
+            degree_sign = u'\N{DEGREE SIGN}'
             temperature2 = "%s%s" % (str(int(weather_obj['currently']['temperature'])), degree_sign)
             currently2 = weather_obj['currently']['summary']
             forecast2 = weather_obj["hourly"]["summary"]
@@ -135,4 +138,3 @@ class Weather(Frame):
     @staticmethod
     def convert_kelvin_to_fahrenheit(kelvin_temp):
         return 1.8 * (kelvin_temp - 273) + 32
-
