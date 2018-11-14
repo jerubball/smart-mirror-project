@@ -310,7 +310,7 @@ class Face(Frame):
             os.system("raspistill -o image.png -k -t 0 -p '200,100,600,400'")
             # perform recognition
             result = do_prediction_single("image.png")
-            text = Label(self, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
+            text = Label(self.labelContainer, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
             text.pack(side=BOTTOM, anchor=W)
 
         except Exception as e:
