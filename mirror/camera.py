@@ -26,7 +26,7 @@ class Camera(Frame):
         self.newsLbl.pack(side=TOP, anchor=W)
         self.labelContainer = Frame(self, bg="black")
         self.labelContainer.pack(side=TOP)
-        self.do_camera()
+        self.do_loop()
 
     def do_camera(self):
         try:
@@ -44,5 +44,18 @@ class Camera(Frame):
             traceback.print_exc()
             # print "Error: %s. Cannot get news." % e
 
-        self.after(10000, self.do_camera)
+    def do_loop(self):
+        thread1 = 
+         threading.Thread(target=do_camera, args=(self,))
+        
+        #if __name__=="__main__": self = 2
+        #self.do_camera
+        thread1.start()
+        
+        # not needed?
+        thread1.join()
+        
+        self.after(10000, self.do_loop)
         # self.after(10000, self.do_camera)
+
+        
