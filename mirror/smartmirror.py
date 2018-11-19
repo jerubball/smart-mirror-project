@@ -19,6 +19,7 @@ from contextlib import contextmanager
 from scripts.vars import *
 from scripts.weather import Weather
 from scripts.nyit import *
+from scripts.welcome import *
 
 from opencv.Facerec import *
 
@@ -294,7 +295,7 @@ class Face(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
-        self.title = 'Face Info'  # 'News' is more internationally generic
+        self.title = 'Face Info'
         self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.newsLbl.pack(side=TOP, anchor=W)
         self.labelContainer = Frame(self, bg="black")
@@ -325,13 +326,14 @@ class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='green')
-        self.topFrame = Frame(self.tk, background='green')
-        self.middleFaceFrame = Frame(self.tk, background='yellow')
-        self.bottomNewsFrame = Frame(self.tk, background='red')
-        self.bottomEventsFrame = Frame(self.tk, background='purple')
-        self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
 
-        self.middleFaceFrame.pack(side=TOP, fill=BOTH, expand=YES)
+        self.topFrame = Frame(self.tk)
+        self.middleFrame = Frame(self.tk)
+        self.bottomNewsFrame = Frame(self.tk)
+        self.bottomEventsFrame = Frame(self.tk)
+
+        self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
+        self.middleFrame.pack(side=TOP, fill=BOTH, expand=YES)
 
         self.bottomNewsFrame.pack(side=LEFT, fill=BOTH, expand=YES)
         self.bottomEventsFrame.pack(side=RIGHT, fill=BOTH, expand=YES)
@@ -339,22 +341,34 @@ class FullscreenWindow:
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
-        # clock
-        self.clock = Clock(self.topFrame)
-        self.clock.pack(side=RIGHT, anchor=N, padx=100, pady=60)
-        # weather
+
+        # Weather
         self.weather = Weather(self.topFrame)
-        self.weather.pack(side=LEFT, anchor=N, padx=100, pady=60)
-        # news
+        self.weather.pack(side=LEFT, anchor=N)
+        # Top Middle, Empty, needs to be filled? --------------> 1 = TOP NAV BAR
+        self.topMiddleEmpty = Welcome(self.topFrame)
+        self.topMiddleEmpty.pack(side=TOP, anchor=CENTER)
+        # Clock
+        self.clock = Clock(self.topFrame)
+        self.clock.pack(side=RIGHT, anchor=N)
+
+        # FaceID
+        self.face = Face(self.middleFrame)
+        self.face.pack(side=TOP, anchor=N)
+        # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
+        self.welcome = Welcome(self.middleFrame)
+        self.welcome.pack(side=BOTTOM, anchor=S)
+
+        # NYIT Events
         self.nyitevents = NyitEvents(self.bottomEventsFrame)
-        self.nyitevents.pack(side=RIGHT, anchor=S, padx=100, pady=60)
-        # calender - removing for now
+        self.nyitevents.pack(side=RIGHT, anchor=S)
+        # NYIT News --------------------------------------------> 3 = BOTTOM NAV BAR
+        self.nyitnews = NyitNews(self.bottomNewsFrame)
+        self.nyitnews.pack(side=LEFT, anchor=S)
+
+        # Calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
-        self.nyitnews = NyitNews(self.bottomNewsFrame)
-        self.nyitnews.pack(side=LEFT, anchor=S, padx=100, pady=60)
-        self.face = Face(self.middleFaceFrame)
-        self.face.pack(side=TOP, anchor=N, padx=100, pady=60)
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
@@ -368,6 +382,11 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    do_training()
+    # do_training()
     w = FullscreenWindow()
     w.tk.mainloop()
+
+# TODO:
+# Missing first event from nyit.edu/events
+# Format NYIT Box and Events Data
+# Format UI
