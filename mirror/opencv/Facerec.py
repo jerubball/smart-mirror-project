@@ -31,7 +31,7 @@ def detect_face(img):
 
     # if no faces are detected then return original img
     if (len(faces) == 0):
-        print("face not found")
+        print("Face is not detected at all!")
         return None, None
 
     # under the assumption that there will be only one face,
@@ -137,7 +137,10 @@ def predict(test_img):
     # detect face from the image
     face, rect = detect_face(img)
     # print(face)
-
+    
+    if face is None:
+        return None, None
+    
     # predict the image using our face recognizer
     label = face_recognizer.predict(face)
     print(label)
@@ -188,15 +191,13 @@ def do_training():
     # or use FisherFaceRecognizer by replacing above line with
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     
-    #face_recognizer = cv2.face.createFisherFaceRecognize()
-    #face_recognizer = cv2.face_EigenFaceRecognizer.create()
-    
-    face_recognizer = cv2.face_LBPHFaceRecognizer.create()
-    # face_recognizer = cv2.face.createFisherFaceRecognize()
-
     # face_recognizer = cv2.face.createFisherFaceRecognize()
     # face_recognizer = cv2.face_EigenFaceRecognizer.create()
     # face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    
+    face_recognizer = cv2.face_LBPHFaceRecognizer.create()
+    # face_recognizer = cv2.face.createFisherFaceRecognize()
+    
     face_recognizer.train(faces, np.array(labels))
 
 
@@ -220,10 +221,10 @@ def do_prediction():
         pair['img'] = cv2.imread(pair['path'])
         #perform a prediction
         pair['predict'], pair['id'] = predict(pair['img'])
+        if pair['id'] is None:
+            continue
         print tables[pair['id']]
         pair['name'] = tables[pair['id']]
-        # perform a prediction
-        pair['predict'] = predict(pair['img'])
     print("Prediction complete")
 
     cv2.waitKey(0)
@@ -237,6 +238,8 @@ def do_prediction_single(filename, title="Result"):
     global face_recognizer
     test_img = cv2.imread(filename)
     predict_img, predict_id = predict(test_img)
+    if predict_id is None:
+        return "Face is not detected"
     predict_name = tables[predict_id]
     cv2.imshow(title, predict_img)
     
