@@ -45,7 +45,7 @@ class Camera(Frame):
             # print "Error: %s. Cannot get news." % e
 
     def do_loop(self):
-        thread1 = threading.Thread(target=do_camera, args=(self,))
+        thread1 = threading.Thread(target=do_camera)
         
         #if __name__=="__main__": self = 2
         #self.do_camera
@@ -54,7 +54,7 @@ class Camera(Frame):
         # not needed?
         thread1.join()
         
-        self.after(10000, self.do_loop)
+        self.after(10000, self.do_camera)
         # self.after(10000, self.do_camera)
 
         
