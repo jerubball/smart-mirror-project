@@ -16,6 +16,8 @@ from contextlib import contextmanager
 from scripts.vars import *
 from opencv.Facerec import *
 
+global person_name
+person_name = None
 
 class Camera(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -52,9 +54,9 @@ class Camera(Frame):
         thread1.start()
         
         # not needed?
-        thread1.join()
+        #thread1.join()
         
-        self.after(10000, self.do_camera)
+        self.after(10000, self.do_loop)
         # self.after(10000, self.do_camera)
 
         
