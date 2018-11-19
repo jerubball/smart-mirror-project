@@ -16,6 +16,7 @@ import os
 from PIL import Image, ImageTk
 from contextlib import contextmanager
 
+from camera import *
 from scripts.vars import *
 from scripts.weather import Weather
 from scripts.nyit import *
@@ -290,38 +291,6 @@ class CalendarEvent(Frame):
                                   bg="black")
         self.eventNameLbl.pack(side=TOP, anchor=E)
 
-
-class Face(Frame):
-    def __init__(self, parent, *args, **kwargs):
-        Frame.__init__(self, parent, *args, **kwargs)
-        self.config(bg='black')
-        self.title = 'Face Info'
-        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
-        self.newsLbl.pack(side=TOP, anchor=W)
-        self.labelContainer = Frame(self, bg="black")
-        self.labelContainer.pack(side=TOP)
-        self.do_camera()
-
-    def do_camera(self):
-        try:
-            # remove all children
-            for widget in self.labelContainer.winfo_children():
-                widget.destroy()
-            # take photo
-            os.system("raspistill -o image.png -k -t 0 -p '200,100,600,400'")
-            # perform recognition
-            result = do_prediction_single("image.png")
-            text = Label(self.labelContainer, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
-            text.pack(side=BOTTOM, anchor=W)
-
-        except Exception as e:
-            traceback.print_exc()
-            # print "Error: %s. Cannot get news." % e
-
-        self.after(10000, self.do_camera)
-        # self.after(10000, self.do_camera)
-
-
 class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
@@ -353,8 +322,8 @@ class FullscreenWindow:
         self.clock.pack(side=RIGHT, anchor=N)
 
         # FaceID
-        self.face = Face(self.middleFrame)
-        self.face.pack(side=TOP, anchor=N)
+        self.camera = Camera(self.middleFrame)
+        self.camera.pack(side=TOP, anchor=N)
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
         self.welcome = Welcome(self.middleFrame)
         self.welcome.pack(side=BOTTOM, anchor=S)
