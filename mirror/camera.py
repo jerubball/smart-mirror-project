@@ -16,9 +16,6 @@ from contextlib import contextmanager
 from scripts.vars import *
 from opencv.Facerec import *
 
-global person_name
-person_name = None
-
 class Camera(Frame):
     def __init__(self, parent, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
@@ -32,13 +29,14 @@ class Camera(Frame):
 
     def do_camera(self):
         try:
-            # remove all children
-            for widget in self.labelContainer.winfo_children():
-                widget.destroy()
             # take photo
             os.system("raspistill -o image.png -k -t 0 -p '200,100,600,400'")
             # perform recognition
             result = do_prediction_single("image.png")
+            # remove all children
+            for widget in self.labelContainer.winfo_children():
+                widget.destroy()
+            # set new label
             text = Label(self.labelContainer, text=result, font=('Helvetica', medium_text_size), fg="white", bg="black")
             text.pack(side=BOTTOM, anchor=W)
 
