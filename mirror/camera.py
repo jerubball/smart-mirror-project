@@ -25,7 +25,8 @@ class Camera(Frame):
         self.newsLbl.pack(side=TOP, anchor=W)
         self.labelContainer = Frame(self, bg="black")
         self.labelContainer.pack(side=TOP)
-        self.do_loop()
+        #self.do_loop()
+        self.after(10000, self.do_loop)
 
     def do_camera(self):
         try:
@@ -55,7 +56,7 @@ class Camera(Frame):
         # not needed?
         #thread1.join()
         
-        self.after(10000, self.do_loop)
+        self.after(50000, self.do_loop)
         # self.after(10000, self.do_camera)
 
         
