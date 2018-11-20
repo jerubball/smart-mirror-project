@@ -314,8 +314,8 @@ class FullscreenWindow:
         self.weather = Weather(self.topFrame)
         self.weather.pack(side=LEFT, anchor=NW)
         # Top Middle, Empty, needs to be filled? --------------> 1 = TOP NAV BAR
-        self.topMiddleEmpty = Welcome(self.topFrame)
-        self.topMiddleEmpty.pack(side=LEFT, anchor=NE)
+        # self.topMiddleEmpty = Welcome(self.topFrame)
+        # self.topMiddleEmpty.pack(side=LEFT, anchor=NE)
         # Clock
         self.clock = Clock(self.topFrame)
         self.clock.pack(side=RIGHT, anchor=NE)
