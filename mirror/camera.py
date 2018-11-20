@@ -26,13 +26,13 @@ class Camera(Frame):
         self.labelContainer = Frame(self, bg="black")
         self.labelContainer.pack(side=TOP)
         #self.do_loop()
-        self.after(10000, self.do_loop)
+        self.after(5000, self.do_loop)
 
     def do_camera(self):
         try:
             # take photo
             #os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
-            os.system("raspistill -o image.png -t 1 -p '350,50,800,600'")
+            os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
             # perform recognition
             result = do_prediction_single("image.png")
             # remove all children
@@ -56,7 +56,7 @@ class Camera(Frame):
         # not needed?
         #thread1.join()
         
-        self.after(50000, self.do_loop)
+        self.after(5000, self.do_loop)
         # self.after(10000, self.do_camera)
 
         
