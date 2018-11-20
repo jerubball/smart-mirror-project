@@ -291,21 +291,20 @@ class CalendarEvent(Frame):
                                   bg="black")
         self.eventNameLbl.pack(side=TOP, anchor=E)
 
+
 class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='green')
 
         self.topFrame = Frame(self.tk)
-        self.middleFrame = Frame(self.tk)
-        self.bottomNewsFrame = Frame(self.tk)
-        self.bottomEventsFrame = Frame(self.tk)
-
         self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
+
+        self.middleFrame = Frame(self.tk)
         self.middleFrame.pack(side=TOP, fill=BOTH, expand=YES)
 
-        self.bottomNewsFrame.pack(side=LEFT, fill=BOTH, expand=YES)
-        self.bottomEventsFrame.pack(side=RIGHT, fill=BOTH, expand=YES)
+        self.bottomFrame = Frame(self.tk)
+        self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
 
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
@@ -313,13 +312,13 @@ class FullscreenWindow:
 
         # Weather
         self.weather = Weather(self.topFrame)
-        self.weather.pack(side=LEFT, anchor=N)
+        self.weather.pack(side=LEFT, anchor=NW)
         # Top Middle, Empty, needs to be filled? --------------> 1 = TOP NAV BAR
         self.topMiddleEmpty = Welcome(self.topFrame)
-        self.topMiddleEmpty.pack(side=TOP, anchor=CENTER)
+        self.topMiddleEmpty.pack(side=LEFT, anchor=NE)
         # Clock
         self.clock = Clock(self.topFrame)
-        self.clock.pack(side=RIGHT, anchor=N)
+        self.clock.pack(side=RIGHT, anchor=NE)
 
         # FaceID
         self.camera = Camera(self.middleFrame)
@@ -329,11 +328,11 @@ class FullscreenWindow:
         self.welcome.pack(side=BOTTOM, anchor=S)
 
         # NYIT Events
-        self.nyitevents = NyitEvents(self.bottomEventsFrame)
-        self.nyitevents.pack(side=RIGHT, anchor=S)
+        self.nyitevents = NyitEvents(self.bottomFrame)
+        self.nyitevents.pack(side=BOTTOM, anchor=W)
         # NYIT News --------------------------------------------> 3 = BOTTOM NAV BAR
-        self.nyitnews = NyitNews(self.bottomNewsFrame)
-        self.nyitnews.pack(side=LEFT, anchor=S)
+        self.nyitnews = NyitNews(self.bottomFrame)
+        self.nyitnews.pack(side=BOTTOM, anchor=W)
 
         # Calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
