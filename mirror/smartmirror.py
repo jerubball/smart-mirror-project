@@ -61,15 +61,15 @@ class Clock(Frame):
         Frame.__init__(self, parent, bg='black')
         # initialize time label
         self.time1 = ''
-        self.timeLbl = Label(self, font=('Helvetica', large_text_size), fg="white", bg="black")
-        self.timeLbl.pack(side=TOP, anchor=E)
+        self.timeLbl = Label(self, font=('Helvetica', large_text_size), fg="white", bg="black", anchor=NE)
+        self.timeLbl.pack(side=TOP, anchor=NE)
         # initialize day of week
         self.day_of_week1 = ''
-        self.dayOWLbl = Label(self, text=self.day_of_week1, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.dayOWLbl = Label(self, text=self.day_of_week1, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=E)
         self.dayOWLbl.pack(side=TOP, anchor=E)
         # initialize date label
         self.date1 = ''
-        self.dateLbl = Label(self, text=self.date1, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.dateLbl = Label(self, text=self.date1, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=E)
         self.dateLbl.pack(side=TOP, anchor=E)
         self.tick()
 
@@ -298,13 +298,16 @@ class FullscreenWindow:
         self.tk.configure(background='green')
 
         self.topFrame = Frame(self.tk)
-        self.topFrame.pack(side=TOP, fill=BOTH, expand=YES)
+        self.topFrame.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
 
-        self.middleFrame = Frame(self.tk)
-        self.middleFrame.pack(side=TOP, fill=BOTH, expand=YES)
+        self.topMiddleFrame = Frame(self.tk)
+        self.topMiddleFrame.pack(side=TOP, anchor=S, fill=BOTH, expand=YES)
 
         self.bottomFrame = Frame(self.tk)
-        self.bottomFrame.pack(side=BOTTOM, fill=BOTH, expand=YES)
+        self.bottomFrame.pack(side=BOTTOM, anchor=S, fill=BOTH, expand=YES)
+
+        self.bottomMiddleFrame = Frame(self.tk)
+        self.bottomMiddleFrame.pack(side=BOTTOM, anchor=N, fill=BOTH, expand=YES)
 
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
@@ -312,27 +315,27 @@ class FullscreenWindow:
 
         # Weather
         self.weather = Weather(self.topFrame)
-        self.weather.pack(side=LEFT, anchor=NW)
+        self.weather.pack(side=LEFT, anchor=NW, fill=BOTH, expand=YES)
         # Top Middle, Empty, needs to be filled? --------------> 1 = TOP NAV BAR
         # self.topMiddleEmpty = Welcome(self.topFrame)
         # self.topMiddleEmpty.pack(side=LEFT, anchor=NE)
         # Clock
         self.clock = Clock(self.topFrame)
-        self.clock.pack(side=RIGHT, anchor=NE)
+        self.clock.pack(side=RIGHT, anchor=NE, fill=BOTH, expand=YES)
 
         # FaceID
-        self.camera = Camera(self.middleFrame)
-        self.camera.pack(side=TOP, anchor=N)
+        self.camera = Camera(self.topMiddleFrame)
+        self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
-        self.welcome = Welcome(self.middleFrame)
-        self.welcome.pack(side=BOTTOM, anchor=S)
+        self.welcome = Welcome(self.topMiddleFrame)
+        self.welcome.pack(side=BOTTOM, anchor=S, fill=BOTH, expand=YES)
 
         # NYIT Events
-        self.nyitevents = NyitEvents(self.bottomFrame)
-        self.nyitevents.pack(side=BOTTOM, anchor=W)
+        self.nyitevents = NyitEvents(self.bottomMiddleFrame)
+        self.nyitevents.pack(side=LEFT, anchor=W, fill=BOTH, expand=YES)
         # NYIT News --------------------------------------------> 3 = BOTTOM NAV BAR
         self.nyitnews = NyitNews(self.bottomFrame)
-        self.nyitnews.pack(side=BOTTOM, anchor=W)
+        self.nyitnews.pack(side=LEFT, anchor=W, fill=BOTH, expand=YES)
 
         # Calender - removing for now
         # self.calender = Calendar(self.bottomFrame)

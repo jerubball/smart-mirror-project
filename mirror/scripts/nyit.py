@@ -17,10 +17,10 @@ class NyitNews(Frame):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
         self.title = 'NYIT Box'
-        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
+        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
         self.newsLbl.pack(side=TOP, anchor=W)
         self.headlinesContainer = Frame(self, bg="black")
-        self.headlinesContainer.pack(side=TOP)
+        self.headlinesContainer.pack(side=TOP, anchor=W)
         self.get_headlines()
 
     def get_headlines(self):
@@ -55,12 +55,12 @@ class NyitHeadlineNews(Frame):
 
         self.eventName = dictionary["title"]
         self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size, 'bold'), fg="white",
-                                  bg="black")
-        self.eventNameLbl.pack(side=LEFT, anchor=N)
+                                  bg="black", justify=LEFT, anchor=W)
+        self.eventNameLbl.pack(side=LEFT, anchor=W)
         self.eventDate = '[' + dictionary["date"] + ']'
         self.eventDateLbl = Label(self, text=self.eventDate, font=('Helvetica', small_text_size, 'italic'), fg="white",
-                                  bg="black")
-        self.eventDateLbl.pack(side=LEFT, anchor=S)
+                                  bg="black", justify=LEFT, anchor=W)
+        self.eventDateLbl.pack(side=RIGHT, anchor=W)
 
 
 class NyitEvents(Frame):
@@ -68,10 +68,10 @@ class NyitEvents(Frame):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
         self.title = 'NYIT Events'
-        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black")
+        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
         self.newsLbl.pack(side=TOP, anchor=W)
         self.headlinesContainer = Frame(self, bg="black")
-        self.headlinesContainer.pack(side=TOP)
+        self.headlinesContainer.pack(side=TOP, anchor=W)
         self.get_headlines()
 
     def get_headlines(self):
@@ -106,9 +106,9 @@ class NyitHeadlineEvents(Frame):
 
         self.eventName = dictionary["title"]
         self.eventNameLbl = Label(self, text=self.eventName, font=('Helvetica', small_text_size, 'bold'), fg="white",
-                                  bg="black")
-        self.eventNameLbl.pack(side=LEFT, anchor=N)
+                                  bg="black", justify=LEFT, anchor=W)
+        self.eventNameLbl.pack(side=LEFT, anchor=W)
         self.eventDate = '[' + dictionary["date"] + ']'
         self.eventDateLbl = Label(self, text=self.eventDate, font=('Helvetica', small_text_size, 'italic'), fg="white",
-                                  bg="black")
-        self.eventDateLbl.pack(side=LEFT, anchor=S)
+                                  bg="black", justify=LEFT, anchor=W)
+        self.eventDateLbl.pack(side=RIGHT, anchor=W)

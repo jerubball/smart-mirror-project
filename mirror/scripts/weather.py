@@ -39,16 +39,15 @@ class Weather(Frame):
         self.icon = ''
         self.degreeFrm = Frame(self, bg="black")
         self.degreeFrm.pack(side=TOP, anchor=W)
-        self.temperatureLbl = Label(self.degreeFrm, font=('Helvetica', xlarge_text_size), fg="white", bg="black")
-        self.temperatureLbl.pack(side=LEFT, anchor=N)
-        self.iconLbl = Label(self.degreeFrm, bg="black")
-        self.iconLbl.pack(side=LEFT, anchor=N, padx=20)
+        self.temperatureLbl = Label(self.degreeFrm, font=('Helvetica', xlarge_text_size), fg="white", bg="black", anchor=NW)
+        self.temperatureLbl.pack(side=LEFT, anchor=NW)
+        self.iconLbl = Label(self.degreeFrm, bg="black", anchor=NE)
+        self.iconLbl.pack(side=LEFT, anchor=NE, padx=20)
         self.currentlyLbl = Label(self, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
         self.currentlyLbl.pack(side=TOP, anchor=W)
-        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black",
-                                 anchor=W)  # justify=RIGHT)
+        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W)
         self.forecastLbl.pack(side=TOP, anchor=W)
-        self.locationLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black")
+        self.locationLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W)
         self.locationLbl.pack(side=TOP, anchor=W)
         self.get_weather()
 
