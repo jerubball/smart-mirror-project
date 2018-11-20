@@ -30,7 +30,8 @@ class Camera(Frame):
     def do_camera(self):
         try:
             # take photo
-            os.system("raspistill -o image.png -k -t 0 -p '200,100,600,400'")
+            #os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
+            os.system("raspistill -o image.png -t 1 -p '350,50,800,600'")
             # perform recognition
             result = do_prediction_single("image.png")
             # remove all children
