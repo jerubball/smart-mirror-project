@@ -53,7 +53,7 @@ else
         label0="$label"
         name0="$name"
         
-        read -p "Enter the name: [$label] " label
+        read -p "Enter the name: [$label0] " label
         
         if [[ "$label" == "" ]]
         then
@@ -64,6 +64,8 @@ else
             else
                 label="$label0"
             fi
+        else
+            name0=""
         fi
         
         if [[ ! -d "$label" ]]
@@ -73,24 +75,26 @@ else
         
         cd "$label"
         
+        if [[ "$name0" == "" ]]
+        then
+            name="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
+            name="${test::-4}"
+        else
+            name="$name0"
+        fi
         (( name++ ))
-        read -p "Enter file number: [$name] " name
+        read -p "Enter file number: [$name0] " name
         
         if [[ "$name" == "" ]]
         then
-            if [[ "$name0" == "" ]]
-            then
-                name="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
-                name="${test::-4}"
-            else
-                name="$name0"
-            fi
-            (( name++ ))
+            
         fi
         
         raspistill -o $name.png -t 1 -p '50,350,800,600'
         
         echo "Exit the preview to continue ..."
         gpicview $name.png
+        
+        cd ..
     done
 fi
