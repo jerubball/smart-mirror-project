@@ -49,6 +49,7 @@ else
     loop=1
     
     while [[ loop == 1 ]]
+    do
         label0="$label"
         name0="$name"
         
@@ -90,4 +91,5 @@ else
         
         echo "Exit the preview to continue ..."
         gpicview $name.png
+    done
 fi
