@@ -77,17 +77,16 @@ else
         
         if [[ "$name0" == "" ]]
         then
-            name="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
-            name="${test::-4}"
-        else
-            name="$name0"
+            name0="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
+            name0="${name0::-4}"
         fi
         (( name++ ))
+        
         read -p "Enter file number: [$name0] " name
         
         if [[ "$name" == "" ]]
         then
-            
+            name="$name0"
         fi
         
         raspistill -o $name.png -t 1 -p '50,350,800,600'
