@@ -37,7 +37,10 @@ then
             shift
         else
             name="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
-            name="${test::-4}"
+            if [[ "$name" != "" ]]
+            then
+                name="${name::-4}"
+            fi
             (( name++ ))
         fi
         
@@ -78,7 +81,10 @@ else
         if [[ "$name0" == "" ]]
         then
             name0="$(ls | grep -E ^[0-9]+[.]png | tail -1)"
-            name0="${name0::-4}"
+            if [[ "$name0" != "" ]]
+            then
+                name0="${name0::-4}"
+            fi
         fi
         (( name++ ))
         
