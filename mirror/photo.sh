@@ -73,7 +73,8 @@ else
         
         cd "$label"
         
-        read -p "Enter the name: [$name] " name
+        (( name++ ))
+        read -p "Enter file number: [$name] " name
         
         if [[ "$name" == "" ]]
         then
