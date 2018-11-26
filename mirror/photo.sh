@@ -28,7 +28,7 @@ then
     cd "$label"
     
     loop=1
-    while [[ loop == 1 || $# > 0 ]]
+    while [[ $loop == 1 || $# > 0 ]]
     do
         loop=0
         if [[ $# > 0 ]]
@@ -48,7 +48,7 @@ else
     name=""
     loop=1
     
-    while [[ loop == 1 ]]
+    while [[ $loop == 1 ]]
     do
         label0="$label"
         name0="$name"
