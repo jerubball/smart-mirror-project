@@ -86,7 +86,7 @@ else
                 name0="${name0::-4}"
             fi
         fi
-        (( name++ ))
+        (( name0++ ))
         
         read -p "Enter file number: [$name0] " name
         
