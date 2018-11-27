@@ -43,7 +43,7 @@ class Camera(Frame):
                 self.predict_counter += 1
                 if self.predict_counter > 4:
                     self.predict_previous = "Face is not detected"
-            else
+            else:
                 self.predict_previous = self.predict_result
                 self.predict_counter = 0
             

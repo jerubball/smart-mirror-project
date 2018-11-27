@@ -143,7 +143,7 @@ def predict(test_img):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
     # detect face from the image
-    face, rect = detect_face(img)
+    face, rect, length = detect_face(img)
     # print(face)
     
     if face is None:
