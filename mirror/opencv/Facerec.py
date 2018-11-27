@@ -31,13 +31,13 @@ def detect_face(img):
 
     # if no faces are detected then return original img
     if (len(faces) == 0):
-        print("Face is not detected at all!")
-        return None, None
+        #print("Face is not detected at all!")
+        return None, None, None
 
     # under the assumption that there will be only one face,
     # extract the face area
     (x, y, w, h) = faces[0]
-    return gray[y:y + w, x:x + h], faces[0]
+    return gray[y:y + w, x:x + h], faces[0], len(faces)
 
 
 def prepare_training_data(data_folder_path):
@@ -53,6 +53,7 @@ def prepare_training_data(data_folder_path):
     labelCount = 0
     # let's go through each directory and read images within it
     for dir_name in dirs:
+        print
         print (dir_name)
         labelCount += 1
         
@@ -82,7 +83,9 @@ def prepare_training_data(data_folder_path):
         for image_name in subject_images_names:
             # ignore system files like .DS_Store
             if image_name.startswith("."):
-                continue;
+                continue
+            if image_name.startswith("noface"):
+                continue
 
             # build image path
             # sample image path = training-data/s1/1.pgm
@@ -92,11 +95,12 @@ def prepare_training_data(data_folder_path):
             image = cv2.imread(image_path)
 
             # display an image window to show the image
-            cv2.imshow("Training on image...", image)
-            cv2.waitKey(100)
+            #cv2.imshow("Training on image...", image)
+            #cv2.waitKey(100)
             # detect face
             # detect face
-            face, rect = detect_face(image)
+            print (image_name)
+            face, rect, length = detect_face(image)
 
             # ------STEP-4--------
             # for the purpose of this tutorial
@@ -106,10 +110,14 @@ def prepare_training_data(data_folder_path):
                 faces.append(face)
                 # add label for this face
                 labels.append(label)
+            else:
+                print("Face is not detected at all!")
+                os.rename(image_path, subject_dir_path + "/noface." + image_name)
 
             cv2.destroyAllWindows()
             cv2.waitKey(1)
             cv2.destroyAllWindows()
+        print
     
     return faces, labels, tables
 
@@ -239,15 +247,21 @@ def do_prediction_single(filename, title="Result"):
     test_img = cv2.imread(filename)
     predict_img, predict_id = predict(test_img)
     if predict_id is None:
-        return "Face is not detected"
+        #return "Face is not detected"
+        return None
     predict_name = tables[predict_id]
     cv2.imshow(title, predict_img)
     
     return predict_name
 
+def do_processing_single(filename):
+    image = cv2.imread(filename)
+    face, rect, length = detect_face(image)
+    print (str(length) + " Face is detected!")
+
 if __name__ is '__main__':
     
-    home_dir = '';
+    home_dir = ''
     do_processing()
     #do_training()
     #do_prediction()
