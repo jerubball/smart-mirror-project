@@ -326,6 +326,7 @@ class FullscreenWindow:
         # FaceID
         self.camera = Camera(self.topMiddleFrame)
         self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
+        self.tk.bind("<Enter>", self.camera.do_update)
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
         self.welcome = Welcome(self.topMiddleFrame)
         self.welcome.pack(side=BOTTOM, anchor=S, fill=BOTH, expand=YES)
@@ -354,7 +355,7 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    do_training()
+    do_loading()
     w = FullscreenWindow()
     w.tk.mainloop()
 

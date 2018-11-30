@@ -22,17 +22,16 @@ class Camera(Frame):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
         self.title = 'Face Info'
-        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=N)
-        self.newsLbl.pack(side=TOP, anchor=N)
-        self.labelContainer = Frame(self, bg="black")
-        self.labelContainer.pack(side=TOP, anchor=N)
+        self.cameraLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=N)
+        self.cameraLbl.pack(side=TOP, anchor=N)
+        #self.labelContainer = Frame(self, bg="black")
+        #self.labelContainer.pack(side=TOP, anchor=N)
         self.predict_previous = None
         self.predict_result = None
         self.predict_counter = 4
-        self.predict_text = Label(self.labelContainer, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
+        self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
 
-        parent.bind("<Enter>", self.do_update)
         self.textbox = Entry(self)
         self.textbox.pack()
         self.textbox.focus_set()
@@ -41,9 +40,10 @@ class Camera(Frame):
         # self.do_loop()
         self.after(5000, self.do_loop)
     
-    def do_update(self):
+    def do_update(self, event=None):
         self.predict_text.config(text=self.textbox.get())
-        self.textbox.set("")
+        self.textbox.delete(0, END)
+        #self.textbox.insert(0, "")
 
     def do_camera(self):
         try:

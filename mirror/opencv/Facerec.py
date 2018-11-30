@@ -147,11 +147,11 @@ def predict(test_img):
     # print(face)
     
     if face is None:
-        return None, None
+        return None, None, None
     
     # predict the image using our face recognizer
     label = face_recognizer.predict(face)
-    print(label)
+    #print(len(label))
     # get id of respective label returned by face recognizer
     #label_id = labels[label[0]] #subjects[label]
     # draw a rectangle around face detected
@@ -159,7 +159,7 @@ def predict(test_img):
     # draw name of predicted person
     # draw_text(img, label_text, rect[0], rect[1] - 5)
     
-    return img, label[0]
+    return img, label[0], label[1]
 
 
 def do_processing():
@@ -207,7 +207,18 @@ def do_training():
     # face_recognizer = cv2.face.createFisherFaceRecognize()
     
     face_recognizer.train(faces, np.array(labels))
+    face_recognizer.save(home_dir + 'recognizer.xml')
 
+def do_loading():
+	global faces
+    global labels
+    global tables
+    global face_recognizer
+
+    faces = np.load(home_dir + 'faces.npy')
+    labels = np.load(home_dir + 'labels.npy')
+    tables = np.load(home_dir + 'tables.npy').item()
+    face_recognizer.load(home_dir + 'recognizer.xml')
 
 def do_prediction():
     global faces
@@ -228,7 +239,7 @@ def do_prediction():
         # load test images
         pair['img'] = cv2.imread(pair['path'])
         #perform a prediction
-        pair['predict'], pair['id'] = predict(pair['img'])
+        pair['predict'], pair['id'], pair['score'] = predict(pair['img'])
         if pair['id'] is None:
             continue
         print tables[pair['id']]
@@ -244,7 +255,8 @@ def do_prediction_single(filename, title="Result"):
     global tables
     global face_recognizer
     test_img = cv2.imread(filename)
-    predict_img, predict_id = predict(test_img)
+    predict_img, predict_id, predict_score = predict(test_img)
+    print ([predict_id, predict_score])
     if predict_id is None:
         #return "Face is not detected"
         return None
