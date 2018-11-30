@@ -224,6 +224,13 @@ def do_loading():
     faces = np.load(home_dir + 'faces.npy')
     labels = np.load(home_dir + 'labels.npy')
     tables = np.load(home_dir + 'tables.npy').item()
+    try:
+        face_recognizer = cv2.createLBPHFaceRecognizer()
+    except AttributeError:
+        try:
+            face_recognizer = cv2.face.createLBPHFaceRecognizer()
+        except AttributeError:
+            pass
     face_recognizer.load(home_dir + 'recognizer.xml')
 
 def do_prediction():
