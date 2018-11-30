@@ -29,8 +29,21 @@ class Camera(Frame):
         self.predict_previous = None
         self.predict_result = None
         self.predict_counter = 4
+        self.predict_text = Label(self.labelContainer, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
+        self.predict_text.pack(side=TOP, anchor=CENTER)
+
+        parent.bind("<Enter>", self.do_update)
+        self.textbox = Entry(self)
+        self.textbox.pack()
+        self.textbox.focus_set()
+        #self.button = Button(self,text='okay',command=None)
+        #self.button.pack()
         # self.do_loop()
         self.after(5000, self.do_loop)
+    
+    def do_update(self):
+        self.predict_text.config(text=self.textbox.get())
+        self.textbox.set("")
 
     def do_camera(self):
         try:
@@ -48,12 +61,11 @@ class Camera(Frame):
                 self.predict_counter = 0
             
             # remove all children
-            for widget in self.labelContainer.winfo_children():
-                widget.destroy()
+            #for widget in self.labelContainer.winfo_children():
+            #    widget.destroy()
             # set new label
-            self.predict_text = Label(self.labelContainer, text=self.predict_previous, font=('Helvetica', medium_text_size), fg="white", bg="black")
-            self.predict_text.pack(side=TOP, anchor=CENTER)
-
+            self.predict_text.config(text=self.predict_previous)
+            
         except Exception as e:
             traceback.print_exc()
             # print "Error: %s. Cannot get news." % e

@@ -310,7 +310,7 @@ class FullscreenWindow:
         self.bottomMiddleFrame.pack(side=BOTTOM, anchor=N, fill=BOTH, expand=YES)
 
         self.state = False
-        self.tk.bind("<Return>", self.toggle_fullscreen)
+        self.tk.bind("<F11>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
 
         # Weather
@@ -340,6 +340,7 @@ class FullscreenWindow:
         # Calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
+        
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
@@ -353,7 +354,7 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    do_training()
+    #do_training()
     w = FullscreenWindow()
     w.tk.mainloop()
 
