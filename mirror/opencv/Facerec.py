@@ -239,7 +239,6 @@ def do_prediction():
     cv2.destroyAllWindows()
 
 def do_prediction_single(filename, title="Result"):
-
     global faces
     global labels
     global tables
@@ -258,6 +257,9 @@ def do_processing_single(filename):
     image = cv2.imread(filename)
     face, rect, length = detect_face(image)
     print (str(length) + " Face is detected!")
+
+def do_take_photo():
+    pass
 
 if __name__ is '__main__':
     
