@@ -192,25 +192,31 @@ def do_training():
     labels = np.load(home_dir + 'labels.npy')
     tables = np.load(home_dir + 'tables.npy').item()
     # create our LBPH face recognizer
-    face_recognizer = cv2.createLBPHFaceRecognizer()
     
+    try:
+        face_recognizer = cv2.createLBPHFaceRecognizer()
+    except AttributeError:
+        try:
+            face_recognizer = cv2.face.createLBPHFaceRecognizer()
+        except AttributeError:
+            pass
     # or use EigenFaceRecognizer by replacing above line with
     # face_recognizer = cv2.face.createEigenFaceRecognizer()
     # or use FisherFaceRecognizer by replacing above line with
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     
     # face_recognizer = cv2.face.createFisherFaceRecognize()
+    # face_recognizer = cv2.face.createFisherFaceRecognizer()
     # face_recognizer = cv2.face_EigenFaceRecognizer.create()
     # face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     
     #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
-    # face_recognizer = cv2.face.createFisherFaceRecognize()
     
     face_recognizer.train(faces, np.array(labels))
     face_recognizer.save(home_dir + 'recognizer.xml')
 
 def do_loading():
-	global faces
+    global faces
     global labels
     global tables
     global face_recognizer
