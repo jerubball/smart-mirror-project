@@ -31,13 +31,13 @@ def detect_face(img):
 
     # if no faces are detected then return original img
     if (len(faces) == 0):
-        print("Face is not detected at all!")
-        return None, None
+        #print("Face is not detected at all!")
+        return None, None, None
 
     # under the assumption that there will be only one face,
     # extract the face area
     (x, y, w, h) = faces[0]
-    return gray[y:y + w, x:x + h], faces[0]
+    return gray[y:y + w, x:x + h], faces[0], len(faces)
 
 
 def prepare_training_data(data_folder_path):
@@ -53,6 +53,7 @@ def prepare_training_data(data_folder_path):
     labelCount = 0
     # let's go through each directory and read images within it
     for dir_name in dirs:
+        print
         print (dir_name)
         labelCount += 1
         
@@ -82,7 +83,9 @@ def prepare_training_data(data_folder_path):
         for image_name in subject_images_names:
             # ignore system files like .DS_Store
             if image_name.startswith("."):
-                continue;
+                continue
+            if image_name.startswith("noface"):
+                continue
 
             # build image path
             # sample image path = training-data/s1/1.pgm
@@ -92,11 +95,12 @@ def prepare_training_data(data_folder_path):
             image = cv2.imread(image_path)
 
             # display an image window to show the image
-            cv2.imshow("Training on image...", image)
-            cv2.waitKey(100)
+            #cv2.imshow("Training on image...", image)
+            #cv2.waitKey(100)
             # detect face
             # detect face
-            face, rect = detect_face(image)
+            print (image_name)
+            face, rect, length = detect_face(image)
 
             # ------STEP-4--------
             # for the purpose of this tutorial
@@ -106,10 +110,14 @@ def prepare_training_data(data_folder_path):
                 faces.append(face)
                 # add label for this face
                 labels.append(label)
+            else:
+                print("Face is not detected at all!")
+                os.rename(image_path, subject_dir_path + "/noface." + image_name)
 
             cv2.destroyAllWindows()
             cv2.waitKey(1)
             cv2.destroyAllWindows()
+        print
     
     return faces, labels, tables
 
@@ -135,15 +143,15 @@ def predict(test_img):
     # make a copy of the image as we don't want to change original image
     img = test_img.copy()
     # detect face from the image
-    face, rect = detect_face(img)
+    face, rect, length = detect_face(img)
     # print(face)
     
     if face is None:
-        return None, None
+        return None, None, None
     
     # predict the image using our face recognizer
     label = face_recognizer.predict(face)
-    print(label)
+    #print(len(label))
     # get id of respective label returned by face recognizer
     #label_id = labels[label[0]] #subjects[label]
     # draw a rectangle around face detected
@@ -151,7 +159,7 @@ def predict(test_img):
     # draw name of predicted person
     # draw_text(img, label_text, rect[0], rect[1] - 5)
     
-    return img, label[0]
+    return img, label[0], label[1]
 
 
 def do_processing():
@@ -184,22 +192,46 @@ def do_training():
     labels = np.load(home_dir + 'labels.npy')
     tables = np.load(home_dir + 'tables.npy').item()
     # create our LBPH face recognizer
-    face_recognizer = cv2.createLBPHFaceRecognizer()
     
+    try:
+        face_recognizer = cv2.createLBPHFaceRecognizer()
+    except AttributeError:
+        try:
+            face_recognizer = cv2.face.createLBPHFaceRecognizer()
+        except AttributeError:
+            pass
     # or use EigenFaceRecognizer by replacing above line with
     # face_recognizer = cv2.face.createEigenFaceRecognizer()
     # or use FisherFaceRecognizer by replacing above line with
     #face_recognizer = cv2.face.createFisherFaceRecognize()
     
     # face_recognizer = cv2.face.createFisherFaceRecognize()
+    # face_recognizer = cv2.face.createFisherFaceRecognizer()
     # face_recognizer = cv2.face_EigenFaceRecognizer.create()
     # face_recognizer = cv2.face_LBPHFaceRecognizer.create()
     
     #face_recognizer = cv2.face_LBPHFaceRecognizer.create()
-    # face_recognizer = cv2.face.createFisherFaceRecognize()
     
     face_recognizer.train(faces, np.array(labels))
+    face_recognizer.save(home_dir + 'recognizer.xml')
 
+def do_loading():
+    global faces
+    global labels
+    global tables
+    global face_recognizer
+
+    faces = np.load(home_dir + 'faces.npy')
+    labels = np.load(home_dir + 'labels.npy')
+    tables = np.load(home_dir + 'tables.npy').item()
+    try:
+        face_recognizer = cv2.createLBPHFaceRecognizer()
+    except AttributeError:
+        try:
+            face_recognizer = cv2.face.createLBPHFaceRecognizer()
+        except AttributeError:
+            pass
+    face_recognizer.load(home_dir + 'recognizer.xml')
 
 def do_prediction():
     global faces
@@ -220,7 +252,7 @@ def do_prediction():
         # load test images
         pair['img'] = cv2.imread(pair['path'])
         #perform a prediction
-        pair['predict'], pair['id'] = predict(pair['img'])
+        pair['predict'], pair['id'], pair['score'] = predict(pair['img'])
         if pair['id'] is None:
             continue
         print tables[pair['id']]
@@ -231,23 +263,32 @@ def do_prediction():
     cv2.destroyAllWindows()
 
 def do_prediction_single(filename, title="Result"):
-
     global faces
     global labels
     global tables
     global face_recognizer
     test_img = cv2.imread(filename)
-    predict_img, predict_id = predict(test_img)
+    predict_img, predict_id, predict_score = predict(test_img)
+    print ([predict_id, predict_score])
     if predict_id is None:
-        return "Face is not detected"
+        #return "Face is not detected"
+        return None
     predict_name = tables[predict_id]
     cv2.imshow(title, predict_img)
     
     return predict_name
 
+def do_processing_single(filename):
+    image = cv2.imread(filename)
+    face, rect, length = detect_face(image)
+    print (str(length) + " Face is detected!")
+
+def do_take_photo():
+    pass
+
 if __name__ is '__main__':
     
-    home_dir = '';
+    home_dir = ''
     do_processing()
     #do_training()
     #do_prediction()

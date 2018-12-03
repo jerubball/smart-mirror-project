@@ -310,7 +310,7 @@ class FullscreenWindow:
         self.bottomMiddleFrame.pack(side=BOTTOM, anchor=N, fill=BOTH, expand=YES)
 
         self.state = False
-        self.tk.bind("<Return>", self.toggle_fullscreen)
+        self.tk.bind("<F11>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
 
         # Weather
@@ -326,6 +326,7 @@ class FullscreenWindow:
         # FaceID
         self.camera = Camera(self.topMiddleFrame)
         self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
+        self.tk.bind("<Enter>", self.camera.do_update)
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
         self.welcome = Welcome(self.topMiddleFrame)
         self.welcome.pack(side=BOTTOM, anchor=S, fill=BOTH, expand=YES)
@@ -340,6 +341,7 @@ class FullscreenWindow:
         # Calender - removing for now
         # self.calender = Calendar(self.bottomFrame)
         # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
+        
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
@@ -353,7 +355,7 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    # do_training()
+    do_loading()
     w = FullscreenWindow()
     w.tk.mainloop()
 
