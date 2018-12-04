@@ -29,7 +29,7 @@ def trains(hour, minute, second):
     return result
 
 
-def arriving_trains(local=None, within=1):
+def arriving_trains(local=None, within=5):
     current_time = time.localtime(local)
     future_time = time.localtime(time.mktime(current_time) + within * 3600)
     print("LOCAL TIME: " + time.strftime("%H:%M:%S", current_time))
