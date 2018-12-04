@@ -14,6 +14,7 @@ def TakeSnapshotAndSave():
     while True:
         # Capture frame-by-frame
         ret, frame = cap.read()
+        frame = cv2.flip(frame, 0)
 
         # to detect faces in video
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -22,7 +23,7 @@ def TakeSnapshotAndSave():
 
         for (x,y,w,h) in faces:
             cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-            cv2.imwrite('opencv'+str(num)+'.jpg',frame)
+            cv2.imwrite('temp/opencv'+str(num)+'.jpg',frame)
             num = num+1
             time.sleep(.5)
             

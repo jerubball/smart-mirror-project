@@ -7,6 +7,7 @@ import requests
 import json
 import traceback
 import feedparser
+import cv2
 
 import os
 
@@ -15,6 +16,8 @@ from contextlib import contextmanager
 
 from scripts.vars import *
 from opencv.Facerec import *
+
+photo_delay = 2500
 
 
 class Camera(Frame):
@@ -39,7 +42,8 @@ class Camera(Frame):
         #self.button = Button(self,text='okay',command=None)
         #self.button.pack()
         # self.do_loop()
-        self.after(5000, self.do_loop)
+        self.cap = cv2.VideoCapture(0)
+        self.after(photo_delay, self.do_loop)
     
     def do_update(self, event=None):
         self.predict_text.config(text=self.textbox.get())
@@ -50,12 +54,21 @@ class Camera(Frame):
         try:
             # take photo
             # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
-            os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
+            #os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
+            #os.system("raspistill -o image.png -t 1 -n -hf -vf")
+            
+            state = False
+            while not state:
+                state, frame = self.cap.read()
+            os.system("rm -f image.jpg")
+            frame = cv2.flip(frame, 0)
+            cv2.imwrite("image.jpg", frame)
+            
             # perform recognition
             if len(self.list) == 4:
-                self.list.remove(0)
+                self.list = self.list[1:]
                 
-            self.predict_result = do_prediction_single("image.png")
+            self.predict_result = do_prediction_single("image.jpg")
             if self.predict_result is None:
                 self.predict_counter += 1
                 if self.predict_counter > 4:
@@ -86,6 +99,6 @@ class Camera(Frame):
         # not needed?
         # thread1.join()
         
-        self.after(7500, self.do_loop)
+        self.after(photo_delay, self.do_loop)
         # self.after(10000, self.do_camera)
 
