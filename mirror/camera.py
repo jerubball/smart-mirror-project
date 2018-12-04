@@ -10,6 +10,8 @@ import feedparser
 import cv2
 
 import os
+import RPi.GPIO as GPIO
+
 
 from PIL import Image, ImageTk
 from contextlib import contextmanager
@@ -19,6 +21,9 @@ from opencv.Facerec import *
 
 photo_delay = 7500
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(18,GPIO.OUT)
 
 class Camera(Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -27,8 +32,8 @@ class Camera(Frame):
         self.title = 'Face Info'
         self.cameraLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=N)
         self.cameraLbl.pack(side=TOP, anchor=N)
-        #self.labelContainer = Frame(self, bg="black")
-        #self.labelContainer.pack(side=TOP, anchor=N)
+        self.inputContainer = Frame(self, bg="black")
+        self.inputContainer.pack(side=TOP, anchor=N)
         self.predict_previous = None
         self.predict_result = None
         self.predict_counter = 0
@@ -36,9 +41,9 @@ class Camera(Frame):
         self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
 
-        self.textbox = Entry(self)
-        self.textbox.pack()
-        self.textbox.focus_set()
+        #self.textbox = Entry(self)
+        #self.textbox.pack()
+        #self.textbox.focus_set()
         #self.button = Button(self,text='okay',command=None)
         #self.button.pack()
         # self.do_loop()
@@ -46,26 +51,31 @@ class Camera(Frame):
         self.after(photo_delay, self.do_loop)
     
     def do_update(self, event=None):
-        self.predict_text.config(text=self.textbox.get())
-        self.textbox.delete(0, END)
+        #self.predict_text.config(text=self.textbox.get())
+        #self.textbox.delete(0, END)
         #self.textbox.insert(0, "")
+        pass
 
     def do_camera(self):
         try:
             # take photo
             # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
-            #os.system("raspistill -o image.jpg -t 1 -vf -p '50,350,800,600'")
+            GPIO.output(18,GPIO.HIGH)
+            os.system("raspistill -o image.jpg -t 1 -vf -p '50,350,800,600'")
+            GPIO.output(18,GPIO.LOW)
             #os.system("raspistill -o image.png -t 1 -n -vf  -hf")
+            #os.system("raspistill -o image.png -t 50 -n -vf")
             
-            state = False
-            while not state:
-                state, frame = self.cap.read()
+            #state = False
+            #while not state:
+            #    state, frame = self.cap.read()
             #os.system("rm -f image.jpg")
-            frame = cv2.flip(frame, 0)
+            #frame = cv2.flip(frame, 0)
             #cv2.imwrite("image.jpg", frame)
             
             # perform recognition
-            self.predict_result = do_prediction_single(frame)
+            #self.predict_result = do_prediction_single(frame)
+            self.predict_result = do_prediction_single_file("image.jpg")
             
             # do correction
             if len(self.list) == 4:
@@ -82,7 +92,7 @@ class Camera(Frame):
                     self.predict_counter = 0
             
             # remove all children
-            #for widget in self.labelContainer.winfo_children():
+            #for widget in self.inputContainer.winfo_children():
             #    widget.destroy()
             # set new label
             self.predict_text.config(text=self.predict_previous)
