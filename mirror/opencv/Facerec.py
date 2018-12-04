@@ -262,14 +262,14 @@ def do_prediction():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def do_prediction_single(filename, title="Result"):
+def do_prediction_single(test_img, title="Result"):
     global faces
     global labels
     global tables
     global face_recognizer
-    test_img = cv2.imread(filename)
+    #test_img = cv2.imread(filename)
     predict_img, predict_id, predict_score = predict(test_img)
-    print ([predict_id, tables[predict_id], predict_score])
+    print ([predict_id, predict_id in tables and tables[predict_id] or None, predict_score])
     if predict_id is None:
         #return "Face is not detected"
         return None
@@ -277,6 +277,9 @@ def do_prediction_single(filename, title="Result"):
     cv2.imshow(title, predict_img)
     
     return predict_name
+
+def do_prediction_single_file(filename, title="Result"):
+    return do_prediction_single(cv2.imread(filename), title)
 
 def do_processing_single(filename):
     image = cv2.imread(filename)

@@ -54,18 +54,18 @@ class Camera(Frame):
         try:
             # take photo
             # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
-            #os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
+            #os.system("raspistill -o image.jpg -t 1 -vf -p '50,350,800,600'")
             #os.system("raspistill -o image.png -t 1 -n -vf  -hf")
             
             state = False
             while not state:
                 state, frame = self.cap.read()
-            os.system("rm -f image.jpg")
+            #os.system("rm -f image.jpg")
             frame = cv2.flip(frame, 0)
-            cv2.imwrite("image.jpg", frame)
+            #cv2.imwrite("image.jpg", frame)
             
             # perform recognition
-            self.predict_result = do_prediction_single("image.jpg")
+            self.predict_result = do_prediction_single(frame)
             
             # do correction
             if len(self.list) == 4:
