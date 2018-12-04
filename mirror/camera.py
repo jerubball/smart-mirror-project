@@ -28,7 +28,8 @@ class Camera(Frame):
         #self.labelContainer.pack(side=TOP, anchor=N)
         self.predict_previous = None
         self.predict_result = None
-        self.predict_counter = 4
+        self.predict_counter = 0
+        self.list = []
         self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
 
@@ -51,14 +52,19 @@ class Camera(Frame):
             # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
             os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
             # perform recognition
+            if len(self.list) == 4:
+                self.list.remove(0)
+                
             self.predict_result = do_prediction_single("image.png")
             if self.predict_result is None:
                 self.predict_counter += 1
                 if self.predict_counter > 4:
                     self.predict_previous = "Face is not detected"
             else:
-                self.predict_previous = self.predict_result
-                self.predict_counter = 0
+                self.list.append(self.predict_result)
+                if self.predict_result in self.list[:-1]:
+                    self.predict_previous = self.predict_result
+                    self.predict_counter = 0
             
             # remove all children
             #for widget in self.labelContainer.winfo_children():
