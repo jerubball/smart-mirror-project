@@ -17,7 +17,7 @@ from contextlib import contextmanager
 from scripts.vars import *
 from opencv.Facerec import *
 
-photo_delay = 2500
+photo_delay = 7500
 
 
 class Camera(Frame):
@@ -65,10 +65,12 @@ class Camera(Frame):
             cv2.imwrite("image.jpg", frame)
             
             # perform recognition
+            self.predict_result = do_prediction_single("image.jpg")
+            
+            # do correction
             if len(self.list) == 4:
                 self.list = self.list[1:]
                 
-            self.predict_result = do_prediction_single("image.jpg")
             if self.predict_result is None:
                 self.predict_counter += 1
                 if self.predict_counter > 4:

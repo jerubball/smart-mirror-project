@@ -269,7 +269,7 @@ def do_prediction_single(filename, title="Result"):
     global face_recognizer
     test_img = cv2.imread(filename)
     predict_img, predict_id, predict_score = predict(test_img)
-    print ([predict_id, predict_score])
+    print ([predict_id, tables[predict_id], predict_score])
     if predict_id is None:
         #return "Face is not detected"
         return None
