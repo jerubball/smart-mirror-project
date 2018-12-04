@@ -1,8 +1,7 @@
 import requests
 import pandas as pd
+import time
 
-local = "24:00:00 PM"  # Change me to test some values
-time_travel = 10       # Change me too
 
 stations_url = 'http://mtaapi.herokuapp.com/api?id=125S'
 
@@ -17,67 +16,30 @@ arrivals = df['result']['arrivals']
 print("\n" + station_name + "\n")
 
 
-def arriving_trains(local_time, within):
-    print("LOCAL TIME: " + local_time)
+def trains(hour, minute, second):
+    trains_url = "http://mtaapi.herokuapp.com/times?hour=" + hour + "&minute=" + minute
+    r = requests.get(trains_url)
+    rr = r.json()
+    result = []
 
-    new_hour = int(local_time[0:2]) + within
-    new_day = False
-    carry_over = 0
-
-    # Catch hour(s) over 24 hours
-    if new_hour > 24:
-        new_day = True
-        carry_over = new_hour - 24
-
-    if new_day and carry_over >= 10:
-        future_time = (str(carry_over) + local_time[2:8])
-    elif new_day:
-        future_time = ("0" + str(carry_over) + local_time[2:8])
-    elif local_time[0] == "0":
-        future_time = (local_time[0] + str(new_hour) + local_time[2:8])
-    else:
-        future_time = (str(new_hour) + local_time[2:8])
-
-    if int(future_time[0:2]) < 10:
-        print("FUTURE TIME: " + future_time + " AM\n")
-    else:
-        print("FUTURE TIME: " + future_time + " PM\n")
-
-    # Display range of times
-    # ==============> (3) <==============
-    for time in arrivals:
-        if carry_over > int(time[0:2]) < new_hour:
-            print(time)
+    for train in rr['result']:
+        if train['name'] == "59 St - Columbus Circle" and train['arrival'] == hour+':'+minute+':'+second:
+            current_train = train['id']
+            result.append(current_train[0])
+    return result
 
 
-arriving_trains(local, time_travel)
+def arriving_trains(local=None, within=1):
+    current_time = time.localtime(local)
+    future_time = time.localtime(time.mktime(current_time) + within * 3600)
+    print("LOCAL TIME: " + time.strftime("%H:%M:%S", current_time))
+    print("FUTURE TIME: " + time.strftime("%H:%M:%S", future_time) +"\n")
+
+    for arrive in arrivals:
+        arr = arrive.split(':')
+        arrive_time = time.struct_time((current_time.tm_year, current_time.tm_mon, current_time.tm_mday, int(arr[0] == "24" and "0" or arr[0]), int(arr[1]), int(arr[2]), current_time.tm_wday, current_time.tm_yday, current_time.tm_isdst))
+        if current_time < arrive_time < future_time:
+            print (time.strftime("%H:%M:%S", arrive_time) + " " + str(trains(arr[0], arr[1], arr[2])))
 
 
-# -------------------------------------------------------------------------
-
-# TODO:
-# Fix if statement (3) to display the correct range of times from local and future time
-
-# -------------------------------------------------------------------------
-
-# Scraps:
-# newlist = []
-# locals = []
-# local = local.split(";")
-
-# for time in arrivals:
-#     times = time.split(":")
-#     newlist.append(int(times[0])*3600+int(times[1])*60+int(times[2]))
-#     print(newlist)
-
-# -------------------------------------------------------------------------
-
-# if local_time[0] == "0":
-#     future_time = (local_time[0] + str(added_hour) + local_time[2:8])
-#     print("1")
-# elif local_time[0:2] == "00":
-#     future_time = (local_time[0:2] + str(added_hour) + local_time[2:8])
-#     print("2")
-# else:
-#     future_time = (str(carry_over) + local_time[2:8])
-#     print("3")
+arriving_trains()
