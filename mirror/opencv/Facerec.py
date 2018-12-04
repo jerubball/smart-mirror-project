@@ -286,9 +286,8 @@ def do_processing_single(filename):
 def do_take_photo():
     pass
 
-if __name__ is '__main__':
-    
+if __name__ == '__main__':
     home_dir = ''
     do_processing()
-    #do_training()
+    do_training()
     #do_prediction()
