@@ -55,7 +55,7 @@ class Camera(Frame):
             # take photo
             # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
             #os.system("raspistill -o image.png -t 1 -p '50,350,800,600'")
-            #os.system("raspistill -o image.png -t 1 -n -hf -vf")
+            #os.system("raspistill -o image.png -t 1 -n -vf  -hf")
             
             state = False
             while not state:
