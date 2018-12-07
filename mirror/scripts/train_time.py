@@ -13,7 +13,6 @@ station_arrivals = response.json()['result']['arrivals']
 df = pd.read_json(stations_url)
 
 arrivals = df['result']['arrivals']
-print("\n" + station_name + "\n")
 
 
 def trains(hour, minute, second):
@@ -29,17 +28,21 @@ def trains(hour, minute, second):
     return result
 
 
-def arriving_trains(local=None, within=5):
+def arriving_trains(local=None, within=1):
     current_time = time.localtime(local)
     future_time = time.localtime(time.mktime(current_time) + within * 3600)
     print("LOCAL TIME: " + time.strftime("%H:%M:%S", current_time))
-    print("FUTURE TIME: " + time.strftime("%H:%M:%S", future_time) +"\n")
+    print("FUTURE TIME: " + time.strftime("%H:%M:%S", future_time) + "\n")
+    result = list()
 
     for arrive in arrivals:
         arr = arrive.split(':')
         arrive_time = time.struct_time((current_time.tm_year, current_time.tm_mon, current_time.tm_mday, int(arr[0] == "24" and "0" or arr[0]), int(arr[1]), int(arr[2]), current_time.tm_wday, current_time.tm_yday, current_time.tm_isdst))
         if current_time < arrive_time < future_time:
-            print (time.strftime("%H:%M:%S", arrive_time) + " " + str(trains(arr[0], arr[1], arr[2])))
-
-
-arriving_trains()
+            times = time.strftime("%H:%M:%S", arrive_time)
+            train_names = str(trains(arr[0], arr[1], arr[2]))
+            train_data = dict()
+            train_data["train_times"] = times
+            train_data["train_names"] = train_names
+            result.append(train_data)
+    return result
