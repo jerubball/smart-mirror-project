@@ -6,7 +6,7 @@ def get_user():
     bios = ['Bio 1', 'Bio 2', 'Bio 3']
     user_data = dict()
     user_data["names"] = names
-    user_data["bio"] =  bios
+    user_data["bio"] = bios
     result = list()
     for name, bio in zip(user_data["names"], user_data["bio"]):
         user = dict()
