@@ -16,7 +16,7 @@ import os
 from PIL import Image, ImageTk
 from contextlib import contextmanager
 
-# from camera import *
+from camera import *
 from scripts.vars import *
 from scripts.weather import Weather
 from scripts.nyit import *
@@ -324,8 +324,8 @@ class FullscreenWindow:
         self.clock.pack(side=RIGHT, anchor=NE, fill=BOTH, expand=YES)
 
         # FaceID
-        # self.camera = Camera(self.topMiddleFrame)
-        # self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
+        self.camera = Camera(self.topMiddleFrame)
+        self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
         # self.tk.bind("<Enter>", self.camera.do_update)
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
         #self.welcome = Welcome(self.topMiddleFrame)
@@ -354,7 +354,7 @@ class FullscreenWindow:
 
 
 if __name__ == '__main__':
-    # do_loading()
+    do_loading()
     w = FullscreenWindow()
     w.tk.mainloop()
 

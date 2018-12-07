@@ -34,8 +34,8 @@ class Camera(Frame):
         self.cameraLbl.pack(side=TOP, anchor=N)
         self.predict_previous = None
         self.predict_result = None
-        self.predict_counter = 0
         self.list = []
+        self.list_limit = 4
         self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
         
@@ -83,12 +83,12 @@ class Camera(Frame):
             self.predict_result = do_prediction_single_file("image.jpg")
             
             # do correction
-            if len(self.list) == 4:
+            if len(self.list) > 3:
                 self.list = self.list[1:]
                 
             if self.predict_result is None:
-                self.predict_counter += 1
-                if self.predict_counter > 4:
+                self.list.append(None)
+                if reduce(lambda x, y : x and y is None, self.list, True):
                     self.predict_previous = "Face is not detected"
             else:
                 self.list.append(self.predict_result)
@@ -106,7 +106,8 @@ class Camera(Frame):
                         item = random.choice(self.preference[self.predict_result])
                         button = Button(self.inputContainer, text=item['label'], width=10, command=lambda: os.system("chromium-browser " + item['url']))
                         button.pack(side=TOP, anchor=CENTER)
-
+                else:
+                    self.predict_previous = "Face is detected, confirming. Stay still..."
             self.predict_text.config(text=self.predict_previous)
             
         except Exception as e:
