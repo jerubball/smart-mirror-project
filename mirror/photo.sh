@@ -44,7 +44,7 @@ then
             (( name++ ))
         fi
         
-        raspistill -o $name.png -t 1 -p '50,350,800,600'
+        raspistill -o $name.png -t 1 -vf -p '50,350,800,600'
     done
 else
     label=""
@@ -95,7 +95,7 @@ else
             name="$name0"
         fi
         
-        raspistill -o $name.png -t 1 -p '50,350,800,600'
+        raspistill -o $name.png -t 1 -vf -p '50,350,800,600'
         
         echo "Exit the preview to continue ..."
         gpicview $name.png

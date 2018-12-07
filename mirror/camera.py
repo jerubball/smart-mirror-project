@@ -11,7 +11,7 @@ import cv2
 
 import os
 import RPi.GPIO as GPIO
-
+import random
 
 from PIL import Image, ImageTk
 from contextlib import contextmanager
@@ -32,22 +32,27 @@ class Camera(Frame):
         self.title = 'Face Info'
         self.cameraLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=N)
         self.cameraLbl.pack(side=TOP, anchor=N)
-        self.inputContainer = Frame(self, bg="black")
-        self.inputContainer.pack(side=TOP, anchor=N)
         self.predict_previous = None
         self.predict_result = None
         self.predict_counter = 0
         self.list = []
         self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
-
+        
+        self.inputContainer = Frame(self, bg="black")
+        self.inputContainer.pack(side=TOP, anchor=N)
+        
+        with open("preference.json") as file:
+            self.preference = json.load(file)
+        
         #self.textbox = Entry(self)
         #self.textbox.pack()
         #self.textbox.focus_set()
         #self.button = Button(self,text='okay',command=None)
         #self.button.pack()
         # self.do_loop()
-        self.cap = cv2.VideoCapture(0)
+        
+        #self.cap = cv2.VideoCapture(0)
         self.after(photo_delay, self.do_loop)
     
     def do_update(self, event=None):
@@ -88,13 +93,20 @@ class Camera(Frame):
             else:
                 self.list.append(self.predict_result)
                 if self.predict_result in self.list[:-1]:
+                    state = self.predict_previous == self.predict_result
                     self.predict_previous = self.predict_result
                     self.predict_counter = 0
-            
-            # remove all children
-            #for widget in self.inputContainer.winfo_children():
-            #    widget.destroy()
-            # set new label
+                    # Detected person.
+                    
+                    if not state:
+                        # remove all children
+                        for widget in self.inputContainer.winfo_children():
+                            widget.destroy()
+                        # set new button
+                        item = random.choice(self.preference[self.predict_result])
+                        button = Button(self.inputContainer, text=item['label'], width=10, command=lambda: os.system("chromium-browser " + item['url']))
+                        button.pack(side=TOP, anchor=CENTER)
+
             self.predict_text.config(text=self.predict_previous)
             
         except Exception as e:
