@@ -19,7 +19,7 @@ from contextlib import contextmanager
 from scripts.vars import *
 from opencv.Facerec import *
 
-photo_delay = 7500
+photo_delay = 5000
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -64,9 +64,9 @@ class Camera(Frame):
     def do_camera(self):
         try:
             # take photo
-            # os.system("raspistill -o image.png -k -t 0 -p '350,50,800,600'")
+            # os.system("raspistill -o image.png -k -t 0 -p '50,350,800,600'")
             GPIO.output(18,GPIO.HIGH)
-            os.system("raspistill -o image.jpg -t 1 -vf -p '50,350,800,600'")
+            os.system("raspistill -o image.jpg -t 1 -vf -p '300,600,400,300'")
             GPIO.output(18,GPIO.LOW)
             #os.system("raspistill -o image.png -t 1 -n -vf  -hf")
             #os.system("raspistill -o image.png -t 50 -n -vf")
@@ -90,6 +90,9 @@ class Camera(Frame):
                 self.list.append(None)
                 if reduce(lambda x, y : x and y is None, self.list, True):
                     self.predict_previous = "Face is not detected"
+                    # remove all children
+                    for widget in self.inputContainer.winfo_children():
+                        widget.destroy()
             else:
                 self.list.append(self.predict_result)
                 if self.predict_result in self.list[:-1]:
@@ -104,7 +107,7 @@ class Camera(Frame):
                             widget.destroy()
                         # set new button
                         item = random.choice(self.preference[self.predict_result])
-                        button = Button(self.inputContainer, text=item['label'], width=10, command=lambda: os.system("chromium-browser " + item['url']))
+                        button = Button(self.inputContainer, text=item['label'], font=('Helvetica', medium_text_size), fg="black", bg="white", command=lambda: os.system("chromium-browser " + item['url']))
                         button.pack(side=TOP, anchor=CENTER)
                 else:
                     self.predict_previous = "Face is detected, confirming. Stay still..."
