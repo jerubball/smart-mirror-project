@@ -43,7 +43,7 @@ class DisplayLocalTrains(Frame):
         self.trainTimeLbl = Label(self, text=self.trainTime, font=('Helvetica', small_text_size, 'bold'), fg="white",
                                   bg="black", justify=LEFT, anchor=W)
         self.trainTimeLbl.pack(side=LEFT, anchor=W)
-        self.trainName = '[' + dictionary["train_names"] + ']'
+        self.trainName = dictionary["train_names"]
         self.trainNameLbl = Label(self, text=self.trainName, font=('Helvetica', small_text_size, 'italic'), fg="white",
                                   bg="black", justify=LEFT, anchor=W)
         self.trainNameLbl.pack(side=LEFT, anchor=W)
