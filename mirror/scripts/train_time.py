@@ -19,20 +19,22 @@ def trains(hour, minute, second):
     trains_url = "http://mtaapi.herokuapp.com/times?hour=" + hour + "&minute=" + minute
     r = requests.get(trains_url)
     rr = r.json()
-    result = []
+    result = ""
 
     for train in rr['result']:
         if train['name'] == "59 St - Columbus Circle" and train['arrival'] == hour+':'+minute+':'+second:
             current_train = train['id']
-            result.append(current_train[0])
+            if current_train[0] not in result:
+                result += current_train[0]
+
     return result
 
 
 def arriving_trains(local=None, within=1):
     current_time = time.localtime(local)
     future_time = time.localtime(time.mktime(current_time) + within * 3600)
-    print("LOCAL TIME: " + time.strftime("%H:%M:%S", current_time))
-    print("FUTURE TIME: " + time.strftime("%H:%M:%S", future_time) + "\n")
+    # print("LOCAL TIME: " + time.strftime("%H:%M:%S", current_time))
+    # print("FUTURE TIME: " + time.strftime("%H:%M:%S", future_time) + "\n")
     result = list()
 
     for arrive in arrivals:
