@@ -25,9 +25,9 @@ def trains(hour, minute, second):
         if train['name'] == "59 St - Columbus Circle" and train['arrival'] == hour+':'+minute+':'+second:
             current_train = train['id']
             if current_train[0] not in result:
-                result += current_train[0]
+                result += current_train[0] + ", "
 
-    return result
+    return result[:-2]
 
 
 def arriving_trains(local=None, within=1):
@@ -41,7 +41,7 @@ def arriving_trains(local=None, within=1):
         arr = arrive.split(':')
         arrive_time = time.struct_time((current_time.tm_year, current_time.tm_mon, current_time.tm_mday, int(arr[0] == "24" and "0" or arr[0]), int(arr[1]), int(arr[2]), current_time.tm_wday, current_time.tm_yday, current_time.tm_isdst))
         if current_time < arrive_time < future_time:
-            times = time.strftime("%H:%M:%S", arrive_time)
+            times = "@ " + time.strftime("%I:%M:%S %p", arrive_time)
             train_names = str(trains(arr[0], arr[1], arr[2]))
             train_data = dict()
             train_data["train_times"] = times
