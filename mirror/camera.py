@@ -106,9 +106,10 @@ class Camera(Frame):
                         for widget in self.inputContainer.winfo_children():
                             widget.destroy()
                         # set new button
-                        item = random.choice(self.preference[self.predict_result])
-                        button = Button(self.inputContainer, text=item['label'], font=('Helvetica', medium_text_size), fg="black", bg="white", command=lambda: os.system("chromium-browser " + item['url']))
-                        button.pack(side=TOP, anchor=CENTER)
+                        if self.predict_result in self.preference:
+                            item = random.choice(self.preference[self.predict_result])
+                            button = Button(self.inputContainer, text=item['label'], font=('Helvetica', medium_text_size), fg="black", bg="white", command=lambda: os.system("chromium-browser " + item['url']))
+                            button.pack(side=TOP, anchor=CENTER)
                 else:
                     self.predict_previous = "Face is detected, confirming. Stay still..."
             self.predict_text.config(text=self.predict_previous)
