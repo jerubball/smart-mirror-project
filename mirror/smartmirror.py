@@ -351,11 +351,17 @@ class FullscreenWindow:
         self.state = False
         self.tk.attributes("-fullscreen", False)
         return "break"
+    
+    def enter_fullscreen(self, event=None):
+        self.state = True
+        self.tk.attributes("-fullscreen", True)
+        return "break"
 
 
 if __name__ == '__main__':
     do_loading()
     w = FullscreenWindow()
+    w.enter_fullscreen()
     w.tk.mainloop()
 
 # TODO:

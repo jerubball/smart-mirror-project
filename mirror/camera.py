@@ -66,7 +66,7 @@ class Camera(Frame):
             # take photo
             # os.system("raspistill -o image.png -k -t 0 -p '50,350,800,600'")
             GPIO.output(18,GPIO.HIGH)
-            os.system("raspistill -o image.jpg -t 1 -vf -p '300,600,400,300'")
+            os.system("raspistill -o image.jpg -t 1 -vf -p '500,500,400,300'")
             GPIO.output(18,GPIO.LOW)
             #os.system("raspistill -o image.png -t 1 -n -vf  -hf")
             #os.system("raspistill -o image.png -t 50 -n -vf")
