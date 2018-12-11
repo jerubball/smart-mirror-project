@@ -11,6 +11,7 @@ from PIL import Image, ImageTk
 from contextlib import contextmanager
 
 from vars import *
+character_threshold = 40
 
 icon_lookup = {
     'clear-day': "assets/Sun.png",  # clear sky day
@@ -43,9 +44,9 @@ class Weather(Frame):
         self.temperatureLbl.pack(side=LEFT, anchor=NW)
         self.iconLbl = Label(self.degreeFrm, bg="black", anchor=NE)
         self.iconLbl.pack(side=LEFT, anchor=NE, padx=20)
-        self.currentlyLbl = Label(self, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
+        self.currentlyLbl = Label(self, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W, justify=LEFT)
         self.currentlyLbl.pack(side=TOP, anchor=W)
-        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W)
+        self.forecastLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W, justify=LEFT)
         self.forecastLbl.pack(side=TOP, anchor=W)
         self.locationLbl = Label(self, font=('Helvetica', small_text_size), fg="white", bg="black", anchor=W)
         self.locationLbl.pack(side=TOP, anchor=W)
@@ -111,10 +112,12 @@ class Weather(Frame):
             else:
                 # remove image
                 self.iconLbl.config(image='')
-
+            
+            currently2 = break_string(currently2)
             if self.currently != currently2:
                 self.currently = currently2
                 self.currentlyLbl.config(text=currently2)
+            forecast2 = break_string(forecast2)
             if self.forecast != forecast2:
                 self.forecast = forecast2
                 self.forecastLbl.config(text=forecast2)
@@ -137,3 +140,10 @@ class Weather(Frame):
     @staticmethod
     def convert_kelvin_to_fahrenheit(kelvin_temp):
         return 1.8 * (kelvin_temp - 273) + 32
+    
+def break_string(string):
+    if len(string) > character_threshold:
+        index = string.find(" ", character_threshold)
+        if index is not -1:
+            string = string[:index] + "\n" + string[index:]
+    return string
