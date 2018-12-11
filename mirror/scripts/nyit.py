@@ -1,3 +1,4 @@
+import tkFont
 from Tkinter import *
 import locale
 import threading
@@ -18,6 +19,12 @@ class NyitNews(Frame):
         self.config(bg='black')
         self.title = 'NYIT Box'
         self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
+        self.newsLbl.pack()
+        # clone the font, set the underline attribute,
+        # and assign it to our widget
+        f = tkFont.Font(self.newsLbl, self.newsLbl.cget("font"))
+        f.configure(underline=True)
+        self.newsLbl.configure(font=f)
         self.newsLbl.pack(side=TOP, anchor=W)
         self.headlinesContainer = Frame(self, bg="black")
         self.headlinesContainer.pack(side=TOP, anchor=W)
@@ -68,8 +75,14 @@ class NyitEvents(Frame):
         Frame.__init__(self, parent, *args, **kwargs)
         self.config(bg='black')
         self.title = 'NYIT Events'
-        self.newsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
-        self.newsLbl.pack(side=TOP, anchor=W)
+        self.eventsLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=W)
+        self.eventsLbl.pack()
+        # clone the font, set the underline attribute,
+        # and assign it to our widget
+        f = tkFont.Font(self.eventsLbl, self.eventsLbl.cget("font"))
+        f.configure(underline=True)
+        self.eventsLbl.configure(font=f)
+        self.eventsLbl.pack(side=TOP, anchor=W)
         self.headlinesContainer = Frame(self, bg="black")
         self.headlinesContainer.pack(side=TOP, anchor=W)
         self.get_headlines()
