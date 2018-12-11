@@ -1,5 +1,5 @@
 # welcome screen for user @ middle display
-
+import tkFont
 from Tkinter import *
 import traceback
 from vars import *
@@ -13,6 +13,12 @@ class Welcome(Frame):
         self.config(bg='black')
         self.title = station_name
         self.nameLbl = Label(self, text=self.title, font=('Helvetica', medium_text_size), fg="white", bg="black", anchor=E)
+        self.nameLbl.pack()
+        # clone the font, set the underline attribute,
+        # and assign it to our widget
+        f = tkFont.Font(self.nameLbl, self.nameLbl.cget("font"))
+        f.configure(underline=True)
+        self.nameLbl.configure(font=f)
         self.nameLbl.pack(side=TOP, anchor=E)
         self.nameContainer = Frame(self, bg="black")
         self.nameContainer.pack(side=TOP, anchor=E)
@@ -44,6 +50,6 @@ class DisplayLocalTrains(Frame):
                                   bg="black", justify=RIGHT, anchor=E)
         self.trainTimeLbl.pack(side=RIGHT, anchor=E)
         self.trainName = dictionary["train_names"]
-        self.trainNameLbl = Label(self, text=self.trainName, font=('Helvetica', small_text_size, 'italic'), fg="white",
+        self.trainNameLbl = Label(self, text=self.trainName, font=('Helvetica', small_text_size, 'bold'), fg="white",
                                   bg="black", justify=RIGHT, anchor=E)
         self.trainNameLbl.pack(side=RIGHT, anchor=E)
