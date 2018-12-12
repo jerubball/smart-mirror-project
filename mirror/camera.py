@@ -35,7 +35,7 @@ class Camera(Frame):
         self.predict_previous = None
         self.predict_result = None
         self.list = []
-        self.list_limit = 4
+        self.list_limit = 3
         self.predict_text = Label(self, text="", font=('Helvetica', medium_text_size), fg="white", bg="black")
         self.predict_text.pack(side=TOP, anchor=CENTER)
         
@@ -60,6 +60,14 @@ class Camera(Frame):
         #self.textbox.delete(0, END)
         #self.textbox.insert(0, "")
         pass
+    
+    def do_reset(self, event=None):
+        self.list = []
+        self.predict_previous = "Face is not Detected"
+        self.predict_result = "Face is not Detected"
+        self.predict_text.config(text=self.predict_previous)
+        for widget in self.inputContainer.winfo_children():
+                            widget.destroy()
 
     def do_camera(self):
         try:
@@ -83,7 +91,7 @@ class Camera(Frame):
             self.predict_result = do_prediction_single_file("image.jpg")
             
             # do correction
-            if len(self.list) > 3:
+            if len(self.list) > self.list_limit:
                 self.list = self.list[1:]
                 
             if self.predict_result is None:
@@ -98,7 +106,6 @@ class Camera(Frame):
                 if self.predict_result in self.list[:-1]:
                     state = self.predict_previous == self.predict_result
                     self.predict_previous = self.predict_result
-                    self.predict_counter = 0
                     # Detected person.
                     
                     if not state:
