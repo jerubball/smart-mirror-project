@@ -366,5 +366,4 @@ if __name__ == '__main__':
 
 # TODO:
 # Missing first event from nyit.edu/events
-# Format NYIT Box and Events Data
 # Format UI
