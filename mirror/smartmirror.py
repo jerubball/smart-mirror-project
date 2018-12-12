@@ -364,8 +364,3 @@ if __name__ == '__main__':
     w = FullscreenWindow()
     w.enter_fullscreen()
     w.tk.mainloop()
-
-# TODO:
-# Missing first event from nyit.edu/events
-# Format NYIT Box and Events Data
-# Format UI
