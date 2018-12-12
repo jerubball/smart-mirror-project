@@ -26,8 +26,8 @@ def trains(hour, minute, second):
     for train in rr['result']:
         if train['name'] == "59 St - Columbus Circle" and train['arrival'] == hour+':'+minute+':'+second:
             current_train = train['id']
-            if current_train[0] not in result:
-                #result += current_train[0]
+            if current_train[0] not in result and len(candidate_list) > 0:
+                # result += current_train[0]
                 item = random.choice(candidate_list)
                 candidate_list.remove(item)
                 select_list.append(item)
