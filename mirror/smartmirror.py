@@ -328,6 +328,8 @@ class FullscreenWindow:
         self.camera.pack(side=TOP, anchor=N, fill=BOTH, expand=YES)
         # self.tk.bind("<Enter>", self.camera.do_update)
         self.tk.bind("<F5>", self.camera.do_reset)
+        self.tk.bind("<F4>", self.camera.do_hold)
+        
         # Welcome, Empty, needs to be filled? ------------------> 2 = MIDDLE
         self.welcome = Welcome(self.topMiddleFrame)
         self.welcome.pack(side=BOTTOM, anchor=S, fill=BOTH, expand=YES)

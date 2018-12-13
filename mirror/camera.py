@@ -41,6 +41,7 @@ class Camera(Frame):
         
         self.inputContainer = Frame(self, bg="black")
         self.inputContainer.pack(side=TOP, anchor=N)
+        self.hold = False
         
         with open("preference.json") as file:
             self.preference = json.load(file)
@@ -68,6 +69,8 @@ class Camera(Frame):
         self.predict_text.config(text=self.predict_previous)
         for widget in self.inputContainer.winfo_children():
                             widget.destroy()
+    def do_hold(self, event=None):
+        self.hold = not self.hold
 
     def do_camera(self):
         try:
@@ -126,14 +129,15 @@ class Camera(Frame):
             # print "Error: %s. Cannot get news." % e
 
     def do_loop(self):
-        thread1 = threading.Thread(target=self.do_camera)
-        
-        # if __name__=="__main__": self = 2
-        # self.do_camera
-        thread1.start()
-        
-        # not needed?
-        # thread1.join()
+        if not self.hold:
+            thread1 = threading.Thread(target=self.do_camera)
+            
+            # if __name__=="__main__": self = 2
+            # self.do_camera
+            thread1.start()
+            
+            # not needed?
+            # thread1.join()
         
         self.after(photo_delay, self.do_loop)
         # self.after(10000, self.do_camera)
