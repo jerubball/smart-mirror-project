@@ -55,6 +55,10 @@ def prepare_training_data(data_folder_path):
     for dir_name in dirs:
         print
         print (dir_name)
+
+        if dir_name.startswith("."):
+            continue
+
         labelCount += 1
         
         # our subject directories start with letter 's' so
